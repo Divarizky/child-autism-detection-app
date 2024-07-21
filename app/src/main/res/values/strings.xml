@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Autism Detection</string>
+    <string name="app_name">CARE Autism Detection</string>
+
+    // Welcome Screen
+    <string name="welcome_image_description">Welcome Image</string>
+    <string name="welcome_heading">Welcome</string>
+    <string name="welcome_subheading">Together we help them understand and manage their emotions</string>
 </resources>

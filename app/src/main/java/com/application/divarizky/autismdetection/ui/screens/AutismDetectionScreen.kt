@@ -50,7 +50,7 @@ fun AutismDetectionScreen() {
 
         Button(
             onClick = {
-                // Placeholder for scan logic
+                // scan logic
             },
             modifier = Modifier
                 .fillMaxWidth()
