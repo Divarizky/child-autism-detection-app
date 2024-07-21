@@ -1,10 +1,11 @@
-package com.application.divarizky.autismdetection.ui.navigation
+package com.application.divarizky.autismdetection.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.application.divarizky.autismdetection.ui.screens.AutismDetectionScreen
 import com.application.divarizky.autismdetection.ui.screens.SplashScreen
 import com.application.divarizky.autismdetection.ui.screens.WelcomeScreen
 
@@ -28,6 +29,9 @@ fun NavRoutes(navController: NavHostController = rememberNavController()) {
         }
         composable(route = NavigationRoutes.Welcome.route) {
             WelcomeScreen(navController)
+        }
+        composable(route = NavigationRoutes.AutismDetection.route) {
+            AutismDetectionScreen(navController)
         }
     }
 }
