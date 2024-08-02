@@ -6,9 +6,10 @@
     <string name="welcome_heading">Welcome</string>
     <string name="welcome_subheading">Together we help them understand and manage their emotions</string>
 
-    // Autism Detection
+    // Autism Detection Screen
     <string name="autism_detection_screen_title">Check Your Child’s\nAutism Status</string>
     <string name="scan_image_description">Scan Image</string>
+    <string name="scan_button_text">Scan</string>
     <string name="take_a_picture_button_text">Take a picture</string>
     <string name="upload_from_gallery_button_text">Upload from gallery</string>
 </resources>
