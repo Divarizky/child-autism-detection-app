@@ -15,18 +15,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.R
+import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
+import com.application.divarizky.autismdetection.ui.theme.LocalResponsiveConfig
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
+    val responsiveConfig = LocalResponsiveConfig.current
+
     LaunchedEffect(Unit) {
         delay(3000) // Delay for 3 seconds
         onSplashFinished()
@@ -42,7 +48,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             painter = painterResource(id = R.drawable.img_splashscreen),
             contentDescription = null,
             modifier = Modifier
-                .size(375.dp)
+                .size(responsiveConfig.imageSize * 1.5f) // Example scaling for background image
                 .graphicsLayer { alpha = 0.3f },
             contentScale = ContentScale.Fit
         )
@@ -55,11 +61,11 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.ic_white_logo),
                 contentDescription = stringResource(R.string.app_name),
-                modifier = Modifier.size(125.dp)
+                modifier = Modifier.size(100.dp)
             )
             Text(
                 text = "CARE",
-                fontSize = 42.sp,
+                fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 color = White
             )
@@ -70,5 +76,8 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen(onSplashFinished = {})
+    val configuration = LocalConfiguration.current
+    AutismDetectionTheme(screenWidth = configuration.screenWidthDp.dp) {
+        SplashScreen(onSplashFinished = {})
+    }
 }
