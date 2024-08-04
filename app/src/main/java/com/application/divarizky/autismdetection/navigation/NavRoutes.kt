@@ -6,13 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.ui.screens.AutismDetectionScreen
+import com.application.divarizky.autismdetection.ui.screens.HomeScreen
 import com.application.divarizky.autismdetection.ui.screens.SplashScreen
 import com.application.divarizky.autismdetection.ui.screens.WelcomeScreen
 
 sealed class NavigationRoutes(val route: String) {
     data object SplashScreen : NavigationRoutes("splashscreen")
     data object Welcome : NavigationRoutes("welcome_screen")
-    data object AutismDetection : NavigationRoutes("autism_detection")
+    data object Home : NavigationRoutes("home_screen")
+    data object AutismDetection : NavigationRoutes("autism_detection_screen")
 }
 
 @Composable
@@ -29,6 +31,9 @@ fun NavRoutes(navController: NavHostController = rememberNavController()) {
         }
         composable(route = NavigationRoutes.Welcome.route) {
             WelcomeScreen(navController)
+        }
+        composable(route = NavigationRoutes.Home.route) {
+            HomeScreen(navController)
         }
         composable(route = NavigationRoutes.AutismDetection.route) {
             AutismDetectionScreen(navController)
