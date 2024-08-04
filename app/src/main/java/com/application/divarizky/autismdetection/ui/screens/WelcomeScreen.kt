@@ -73,7 +73,7 @@ fun WelcomeScreen(navController: NavHostController) {
                         shape = RoundedCornerShape(responsiveConfig.cornerRadius)
                     )
                     .clickable {
-                        navController.navigate("autism_detection")
+                        navController.navigate("home_screen")
                     },
                 contentAlignment = Alignment.Center
             ) {

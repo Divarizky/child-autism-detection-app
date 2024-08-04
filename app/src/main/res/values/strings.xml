@@ -6,6 +6,13 @@
     <string name="welcome_heading">Welcome</string>
     <string name="welcome_subheading">Together we help them understand and manage their emotions</string>
 
+    // Home Screen
+    <string name="home_screen_tagline">Let\'s start early detection of autism easily</string>
+
+    // Home Screen Feature Cards
+    <string name="home_check_child_for_autism">Check Your Child for Possible Autism!</string>
+    <string name="home_check_child_support_text">Find out early to ensure and help you provide the best support for your child.</string>
+
     // Autism Detection Screen
     <string name="autism_detection_screen_title">Check Your Child’s\nAutism Status</string>
     <string name="scan_image_description">Scan Image</string>

@@ -1466,3 +1466,5 @@ Q.idea/sonarlint/securityhotspotstore/1/0/10aa369f37b70a5fc9fb7b150300f1099ebe82
 Q.idea/sonarlint/securityhotspotstore/0/c/0c0225e236baaec3a0edb17799b59bae8d233f2f,e\4\e461b9c8ce3cbe95e69b5994185bf207b890ddc3
 Å
 Q.idea/sonarlint/securityhotspotstore/0/6/06e33221b69be60026827497b3b97665a25a4862,1\9\1946cacf34edb4af80a1fee60d8b5dca34710d82
+Ñ
+Tapp/src/main/java/com/application/divarizky/autismdetection/ui/screens/HomeScreen.kt,d\f\dfd37cc16ddc40dc112ac01d73238fda8d4f53b0
