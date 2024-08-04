@@ -118,7 +118,7 @@ val LocalResponsiveConfig = staticCompositionLocalOf {
         paddingStandard = 16.dp,
         verticalPadding = 12.dp,
         titleTextStyle = 24.sp,
-        cornerRadius = 16.dp
+        cornerRadius = 12.dp
     )
 }
 

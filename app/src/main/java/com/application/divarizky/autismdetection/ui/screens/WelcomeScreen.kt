@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
 import com.application.divarizky.autismdetection.ui.theme.LocalResponsiveConfig
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
+import com.application.divarizky.autismdetection.ui.theme.ResponsiveConfig
 import com.application.divarizky.autismdetection.ui.theme.White
 
 @Composable
@@ -34,56 +36,65 @@ fun WelcomeScreen(navController: NavHostController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .padding(responsiveConfig.paddingStandard)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_welcome),
-                contentDescription = stringResource(R.string.welcome_image_description),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.size(responsiveConfig.imageSize)
-            )
-            Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding * 4))
-            Text(
-                text = stringResource(R.string.welcome_heading),
-                fontSize = responsiveConfig.titleTextStyle,
-            )
-            Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
-            Text(
-                text = stringResource(R.string.welcome_subheading),
-                textAlign = TextAlign.Center,
-                fontSize = responsiveConfig.mediumFontSize,
-            )
-        }
+        ContentSection(responsiveConfig)
+        BottomButton(navController, responsiveConfig)
+    }
+}
 
+@Composable
+fun ContentSection(responsiveConfig: ResponsiveConfig) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(responsiveConfig.paddingStandard)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.img_welcome),
+            contentDescription = stringResource(R.string.welcome_image_description),
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(responsiveConfig.imageSize)
+        )
+        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding * 6))
+        Text(
+            text = stringResource(R.string.welcome_heading),
+            fontSize = responsiveConfig.titleTextStyle,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+        Text(
+            text = stringResource(R.string.welcome_subheading),
+            textAlign = TextAlign.Center,
+            fontSize = responsiveConfig.mediumFontSize,
+        )
+    }
+}
+
+@Composable
+fun BottomButton(navController: NavHostController, responsiveConfig: ResponsiveConfig) {
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(responsiveConfig.paddingStandard)
+    ) {
         Box(
-            contentAlignment = Alignment.BottomEnd,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(responsiveConfig.paddingStandard)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(52.dp)
-                    .background(
-                        color = MediumBlue,
-                        shape = RoundedCornerShape(responsiveConfig.cornerRadius)
-                    )
-                    .clickable {
-                        navController.navigate("home_screen")
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_forward),
-                    contentDescription = null,
-                    tint = White,
-                    modifier = Modifier.size(28.dp)
+                .size(52.dp)
+                .background(
+                    color = MediumBlue,
+                    shape = RoundedCornerShape(responsiveConfig.cornerRadius)
                 )
-            }
+                .clickable {
+                    navController.navigate("home_screen")
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_forward),
+                contentDescription = stringResource(R.string.navigate_next),
+                tint = White,
+                modifier = Modifier.size(28.dp)
+            )
         }
     }
 }

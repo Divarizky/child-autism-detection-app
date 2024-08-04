@@ -5,6 +5,7 @@
     <string name="welcome_image_description">Welcome Image</string>
     <string name="welcome_heading">Welcome</string>
     <string name="welcome_subheading">Together we help them understand and manage their emotions</string>
+    <string name="navigate_next">next</string>
 
     // Home Screen
     <string name="home_screen_tagline">Let\'s start early detection of autism easily</string>
