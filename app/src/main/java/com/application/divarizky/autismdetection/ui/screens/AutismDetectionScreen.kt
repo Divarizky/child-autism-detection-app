@@ -1,6 +1,7 @@
 package com.application.divarizky.autismdetection.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,28 +27,31 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.theme.LocalResponsiveConfig
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.ResponsiveConfig
 
 @Composable
 fun AutismDetectionScreen(navController: NavHostController) {
-    val responsiveConfig = LocalResponsiveConfig.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(responsiveConfig.paddingStandard)
+            .padding(paddings)
     ) {
-        Header(responsiveConfig)
-        ScanImage(responsiveConfig)
+        Header()
+        ScanImage()
         Spacer(modifier = Modifier.weight(1f))
-        ActionButtons(responsiveConfig)
+        ActionButtons()
     }
 }
 
 @Composable
-fun Header(responsiveConfig: ResponsiveConfig) {
+fun Header() {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
@@ -56,16 +60,17 @@ fun Header(responsiveConfig: ResponsiveConfig) {
         Text(
             text = stringResource(R.string.autism_detection_screen_title),
             textAlign = TextAlign.Center,
-            fontSize = responsiveConfig.titleTextStyle,
+            style = titleTextStyle,
             fontWeight = FontWeight.Bold
         )
     }
 }
 
 @Composable
-fun ScanImage(responsiveConfig: ResponsiveConfig) {
-    Box(
-        contentAlignment = Alignment.Center,
+fun ScanImage() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 100.dp)
@@ -74,42 +79,57 @@ fun ScanImage(responsiveConfig: ResponsiveConfig) {
             painter = painterResource(id = R.drawable.img_scan),
             contentDescription = stringResource(R.string.scan_image_description),
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(responsiveConfig.imageSize)
+            modifier = Modifier
+                .size(imageSize)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            textAlign = TextAlign.Center,
+            text = stringResource(R.string.autism_detection_screen_support_text),
+            style = smallTextStyle
         )
     }
 }
 
 @Composable
-fun ActionButtons(responsiveConfig: ResponsiveConfig) {
+fun ActionButtons() {
     Column(
         modifier = Modifier
-            .padding(bottom = responsiveConfig.verticalPadding),
+            .padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = {
                 // scan logic
             },
-            shape = RoundedCornerShape(responsiveConfig.cornerRadius),
+            shape = RoundedCornerShape(buttonCornerRadius),
             colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(responsiveConfig.buttonHeight)
+                .height(50.dp)
         ) {
-            Text(text = stringResource(R.string.take_a_picture_button_text))
+            Text(
+                text = stringResource(R.string.take_a_picture_button_text),
+                style = buttonTextStyle
+            )
         }
-        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
                 // upload from gallery logic
             },
-            shape = RoundedCornerShape(responsiveConfig.cornerRadius),
+            shape = RoundedCornerShape(buttonCornerRadius),
             colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(responsiveConfig.buttonHeight)
+                .height(50.dp)
         ) {
-            Text(text = stringResource(R.string.upload_from_gallery_button_text))
+            Text(
+                text = stringResource(R.string.upload_from_gallery_button_text),
+                style = buttonTextStyle
+            )
         }
     }
 }

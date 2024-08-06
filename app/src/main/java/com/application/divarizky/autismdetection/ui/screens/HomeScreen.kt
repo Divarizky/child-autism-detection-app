@@ -2,6 +2,7 @@ package com.application.divarizky.autismdetection.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,9 +31,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.theme.LocalResponsiveConfig
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.cornerRadius
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.ResponsiveConfig
 import com.application.divarizky.autismdetection.ui.theme.White
 
 @Composable
@@ -41,48 +50,43 @@ fun HomeScreen(navController: NavHostController) {
 
 @Composable
 fun HomeContent(navController: NavHostController) {
-    val responsiveConfig = LocalResponsiveConfig.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MediumBlue)
-            .padding(responsiveConfig.paddingStandard)
+            .padding(paddings)
     ) {
-        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        GreetingSection(responsiveConfig)
-
-        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+        GreetingSection()
 
         ImageSection()
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        FeatureCard(navController, responsiveConfig)
+        FeatureCard(navController)
     }
 }
 
 @Composable
-fun GreetingSection(responsiveConfig: ResponsiveConfig) {
+fun GreetingSection() {
     Column(
+        horizontalAlignment = Alignment.Start,
         modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
+            .fillMaxWidth()
     ) {
         Text(
             text = "Hi, Divarizky",
-            fontSize = responsiveConfig.titleTextStyle,
+            style = titleTextStyle,
             fontWeight = FontWeight.Bold,
             color = White
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
         Text(
             text = stringResource(R.string.home_screen_tagline),
-            fontSize = responsiveConfig.mediumFontSize,
-            color = White
+            style = regularTextStyle,
+            color = White,
+            modifier = Modifier
+                .padding(end = 125.dp)
         )
     }
 }
@@ -99,42 +103,43 @@ fun ImageSection() {
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.5f)
+                .size(imageSize)
         )
     }
 }
 
 @Composable
-fun FeatureCard(navController: NavHostController, responsiveConfig: ResponsiveConfig) {
+fun FeatureCard(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(responsiveConfig.cornerRadius))
+            .clip(RoundedCornerShape(cornerRadius))
             .background(White)
             .height(300.dp)
             .padding(
-                vertical = responsiveConfig.paddingStandard,
-                horizontal = responsiveConfig.paddingStandard
+                vertical = paddings,
+                horizontal = paddings
             )
     ) {
         Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
             Text(
-                text = stringResource(R.string.home_check_child_for_autism),
+                text = stringResource(R.string.check_child_for_autism),
                 textAlign = TextAlign.Center,
-                fontSize = responsiveConfig.mediumFontSize,
+                style = largeTextStyle,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 28.dp, start = 50.dp, end = 50.dp)
+                modifier = Modifier.padding(start = 50.dp, end = 50.dp)
             )
-            Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+            Spacer(modifier = Modifier.height(paddings))
 
             Text(
-                text = stringResource(R.string.home_check_child_support_text),
+                text = stringResource(R.string.check_child_support_text),
                 textAlign = TextAlign.Center,
-                fontSize = responsiveConfig.smallFontSize,
+                style = smallTextStyle
             )
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -142,14 +147,18 @@ fun FeatureCard(navController: NavHostController, responsiveConfig: ResponsiveCo
                 onClick = {
                     navController.navigate("autism_detection_screen")
                 },
-                shape = RoundedCornerShape(responsiveConfig.cornerRadius),
+                shape = RoundedCornerShape(buttonCornerRadius),
                 colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
                 modifier = Modifier
-                    .width(responsiveConfig.buttonWidth)
-                    .height(responsiveConfig.buttonHeight)
+                    .width(150.dp)
+                    .height(50.dp)
                     .align(Alignment.CenterHorizontally)
             ) {
-                Text(text = "Check Now", color = White)
+                Text(
+                    text = "Check Now",
+                    style = buttonTextStyle,
+                    color = White
+                )
             }
         }
     }

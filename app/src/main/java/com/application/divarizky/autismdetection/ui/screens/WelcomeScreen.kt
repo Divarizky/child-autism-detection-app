@@ -22,67 +22,75 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
-import com.application.divarizky.autismdetection.ui.theme.LocalResponsiveConfig
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.mediumTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.ResponsiveConfig
+import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
 import com.application.divarizky.autismdetection.ui.theme.White
 
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
-    val responsiveConfig = LocalResponsiveConfig.current
-
     Box(
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        ContentSection(responsiveConfig)
-        BottomButton(navController, responsiveConfig)
+        ContentSection()
+        BottomButton(navController)
     }
 }
 
 @Composable
-fun ContentSection(responsiveConfig: ResponsiveConfig) {
+fun ContentSection() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(responsiveConfig.paddingStandard)
+        modifier = Modifier
+            .padding(paddings)
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_welcome),
             contentDescription = stringResource(R.string.welcome_image_description),
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.size(responsiveConfig.imageSize)
+//            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(imageSize)
+                .aspectRatio(1.5f)
         )
-        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding * 6))
+        Spacer(modifier = Modifier.height(20.dp))
+
         Text(
             text = stringResource(R.string.welcome_heading),
-            fontSize = responsiveConfig.titleTextStyle,
-            fontWeight = FontWeight.Bold
+            textAlign = TextAlign.Center,
+            style = titleTextStyle,
+            fontWeight = FontWeight.Bold,
         )
-        Spacer(modifier = Modifier.height(responsiveConfig.verticalPadding))
+
         Text(
             text = stringResource(R.string.welcome_subheading),
             textAlign = TextAlign.Center,
-            fontSize = responsiveConfig.mediumFontSize,
+            style = regularTextStyle,
         )
     }
 }
 
 @Composable
-fun BottomButton(navController: NavHostController, responsiveConfig: ResponsiveConfig) {
+fun BottomButton(navController: NavHostController) {
     Box(
         contentAlignment = Alignment.BottomEnd,
         modifier = Modifier
             .fillMaxSize()
-            .padding(responsiveConfig.paddingStandard)
+            .padding(paddings)
     ) {
         Box(
             modifier = Modifier
                 .size(52.dp)
                 .background(
                     color = MediumBlue,
-                    shape = RoundedCornerShape(responsiveConfig.cornerRadius)
+                    shape = RoundedCornerShape(buttonCornerRadius)
                 )
                 .clickable {
                     navController.navigate("home_screen")
@@ -102,8 +110,5 @@ fun BottomButton(navController: NavHostController, responsiveConfig: ResponsiveC
 @Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
-    val configuration = LocalConfiguration.current
-    AutismDetectionTheme(screenWidth = configuration.screenWidthDp.dp) {
-        WelcomeScreen(navController = rememberNavController())
-    }
+    WelcomeScreen(navController = rememberNavController())
 }
