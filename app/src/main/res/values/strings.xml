@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">CARE Autism Detection</string>
+    <string name="app_name">Autism Detection</string>
 
     // Welcome Screen
     <string name="welcome_image_description">Welcome Image</string>
-    <string name="welcome_heading">Welcome</string>
+    <string name="welcome_heading">Welcome.</string>
     <string name="welcome_subheading">Together we help them understand and manage their emotions</string>
     <string name="navigate_next">next</string>
 
@@ -11,11 +11,12 @@
     <string name="home_screen_tagline">Let\'s start early detection of autism easily</string>
 
     // Home Screen Feature Cards
-    <string name="home_check_child_for_autism">Check Your Child for Possible Autism!</string>
-    <string name="home_check_child_support_text">Find out early to ensure and help you provide the best support for your child.</string>
+    <string name="check_child_for_autism">Check Your Child for Possible Autism!</string>
+    <string name="check_child_support_text">Find out early to ensure and help you provide the best support for your child.</string>
 
     // Autism Detection Screen
     <string name="autism_detection_screen_title">Check Your Child’s\nAutism Status</string>
+    <string name="autism_detection_screen_support_text">Simply capture or scan a photo where your child\'s face is clearly visible for accurate results. This helps you understand their feelings and offer the right support.</string>
     <string name="scan_image_description">Scan Image</string>
     <string name="scan_button_text">Scan</string>
     <string name="take_a_picture_button_text">Take a picture</string>

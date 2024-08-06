@@ -1468,3 +1468,5 @@ Q.idea/sonarlint/securityhotspotstore/0/c/0c0225e236baaec3a0edb17799b59bae8d233f
 Q.idea/sonarlint/securityhotspotstore/0/6/06e33221b69be60026827497b3b97665a25a4862,1\9\1946cacf34edb4af80a1fee60d8b5dca34710d82
 „
 Tapp/src/main/java/com/application/divarizky/autismdetection/ui/screens/HomeScreen.kt,d\f\dfd37cc16ddc40dc112ac01d73238fda8d4f53b0
+‰
+Yapp/src/main/java/com/application/divarizky/autismdetection/ui/components/BottomNavbar.kt,9\2\928144ad0c35a230893812c9f65a165fcf686599
