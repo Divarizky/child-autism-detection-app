@@ -14,24 +14,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Define dimens default configuration for components
+// Define dimensions default configuration for components
 object Dimens {
     // Padding configuration
     val paddings = 16.dp
+    val height = 20.dp
 
     // Text configuration
     val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp)
     val largeTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 20.sp)
     val mediumTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 18.sp)
-    val regularTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 16.sp)
-    val smallTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp)
-    val buttonTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+    val regularTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp)
+    val smallTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 12.sp)
+    val buttonTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp, fontWeight = FontWeight.Bold)
 
     // Button configuration
     val buttonCornerRadius = 8.dp
+    val buttonSize = 52.dp
+    val buttonHeight = 50.dp
 
     // Images configuration
-    val imageSize = 300.dp
+    val imageWidth = 270.dp
+    val imageHeight = 180.dp
     val cornerRadius = 16.dp
 }
 
