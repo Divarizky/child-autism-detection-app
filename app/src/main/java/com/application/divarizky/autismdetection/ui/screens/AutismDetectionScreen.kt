@@ -1,19 +1,9 @@
 package com.application.divarizky.autismdetection.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,29 +14,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
+import com.application.divarizky.autismdetection.ui.components.BottomNavbar
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
 import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
+import com.application.divarizky.autismdetection.ui.viewmodel.SharedViewModel
 
 @Composable
-fun AutismDetectionScreen(navController: NavHostController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddings)
-    ) {
-        Header()
-        ScanImage()
-        Spacer(modifier = Modifier.weight(1f))
-        ActionButtons()
+fun AutismDetectionScreen(
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel = viewModel()
+) {
+    Scaffold(
+        bottomBar = {
+            BottomNavbar(navController, sharedViewModel)
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(paddings)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Header()
+                Spacer(modifier = Modifier.weight(1f))
+                ScanImage()
+                Spacer(modifier = Modifier.weight(1f))
+                ActionButtons()
+            }
+        }
     }
 }
 
@@ -73,14 +82,14 @@ fun ScanImage() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 100.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_scan),
             contentDescription = stringResource(R.string.scan_image_description),
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .size(imageSize)
+                .width(imageWidth)
+                .height(imageHeight)
         )
         Spacer(modifier = Modifier.height(20.dp))
 

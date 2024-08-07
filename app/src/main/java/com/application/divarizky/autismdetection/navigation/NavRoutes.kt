@@ -9,16 +9,21 @@ import com.application.divarizky.autismdetection.ui.screens.AutismDetectionScree
 import com.application.divarizky.autismdetection.ui.screens.HomeScreen
 import com.application.divarizky.autismdetection.ui.screens.SplashScreen
 import com.application.divarizky.autismdetection.ui.screens.WelcomeScreen
+import com.application.divarizky.autismdetection.ui.viewmodel.SharedViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 sealed class NavigationRoutes(val route: String) {
-    data object SplashScreen : NavigationRoutes("splashscreen")
-    data object Welcome : NavigationRoutes("welcome_screen")
-    data object Home : NavigationRoutes("home_screen")
-    data object AutismDetection : NavigationRoutes("autism_detection_screen")
+    object SplashScreen : NavigationRoutes("splashscreen")
+    object Welcome : NavigationRoutes("welcome_screen")
+    object Home : NavigationRoutes("home_screen")
+    object AutismDetection : NavigationRoutes("autism_detection_screen")
 }
 
 @Composable
-fun NavRoutes(navController: NavHostController = rememberNavController()) {
+fun NavRoutes(
+    navController: NavHostController = rememberNavController(),
+    sharedViewModel: SharedViewModel = viewModel()
+) {
     NavHost(navController = navController, startDestination = NavigationRoutes.SplashScreen.route) {
         composable(route = NavigationRoutes.SplashScreen.route) {
             SplashScreen(
@@ -33,10 +38,11 @@ fun NavRoutes(navController: NavHostController = rememberNavController()) {
             WelcomeScreen(navController)
         }
         composable(route = NavigationRoutes.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, sharedViewModel)
         }
         composable(route = NavigationRoutes.AutismDetection.route) {
-            AutismDetectionScreen(navController)
+            AutismDetectionScreen(navController, sharedViewModel)
         }
     }
 }
+

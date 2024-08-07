@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -21,21 +20,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
+import com.application.divarizky.autismdetection.navigation.NavigationRoutes
 import com.application.divarizky.autismdetection.ui.components.BottomNavbar
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.cornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.height
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
 import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
 import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
@@ -43,12 +45,16 @@ import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
 import com.application.divarizky.autismdetection.ui.theme.White
+import com.application.divarizky.autismdetection.ui.viewmodel.SharedViewModel
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel = viewModel()
+) {
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController)
+            BottomNavbar(navController, sharedViewModel)
         }
     ) { innerPadding ->
         Box(
@@ -56,20 +62,21 @@ fun HomeScreen(navController: NavHostController) {
                 .background(color = MediumBlue)
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(paddings) // tambahan padding untuk isi home screen
+                .padding(paddings)
         ) {
-            HomeContent(navController)
+            HomeContent(navController, sharedViewModel)
         }
     }
 }
 
 @Composable
-fun HomeContent(navController: NavHostController) {
+fun HomeContent(navController: NavHostController, sharedViewModel: SharedViewModel) {
     Column {
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(height))
         GreetingSection()
         ImageSection()
-        FeatureCard(navController)
+        Spacer(modifier = Modifier.height(height))
+        FeatureCard(navController, sharedViewModel)
     }
 }
 
@@ -88,8 +95,7 @@ fun GreetingSection() {
         Text(
             text = stringResource(R.string.home_screen_tagline),
             style = regularTextStyle,
-            color = White,
-            modifier = Modifier.padding(end = 125.dp)
+            color = White
         )
     }
 }
@@ -103,20 +109,21 @@ fun ImageSection() {
         Image(
             painter = painterResource(R.drawable.img_healthcare),
             contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.size(imageSize)
+            modifier = Modifier
+                .width(imageWidth)
+                .height(imageHeight)
         )
     }
 }
 
 @Composable
-fun FeatureCard(navController: NavHostController) {
+fun FeatureCard(navController: NavHostController, sharedViewModel: SharedViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(cornerRadius))
             .background(White)
-            .height(300.dp)
+            .height(250.dp)
             .padding(paddings)
     ) {
         Column(
@@ -129,26 +136,28 @@ fun FeatureCard(navController: NavHostController) {
                 textAlign = TextAlign.Center,
                 style = largeTextStyle,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 50.dp)
+                modifier = Modifier.padding(horizontal = 25.dp)
             )
-            Spacer(modifier = Modifier.height(paddings))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stringResource(R.string.check_child_support_text),
                 textAlign = TextAlign.Center,
                 style = smallTextStyle
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = {
-                    navController.navigate("autism_detection_screen")
+                    sharedViewModel.onNavigationItemSelected(NavigationRoutes.AutismDetection.route)
+                    navController.navigate(NavigationRoutes.AutismDetection.route)
                 },
                 shape = RoundedCornerShape(buttonCornerRadius),
                 colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(50.dp)
+                    .width(160.dp)
+                    .height(48.dp)
+                    .padding(start = 8.dp, end = 8.dp)
                     .align(Alignment.CenterHorizontally)
             ) {
                 Text(

@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,7 +28,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.ui.theme.Dimens.height
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
+import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
 import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
 import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
@@ -38,9 +40,9 @@ import com.application.divarizky.autismdetection.ui.theme.White
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
     ) {
         ContentSection()
         BottomButton(navController)
@@ -59,10 +61,10 @@ fun ContentSection() {
             painter = painterResource(id = R.drawable.img_welcome),
             contentDescription = stringResource(R.string.welcome_image_description),
             modifier = Modifier
-                .size(imageSize)
-                .aspectRatio(1.5f)
+                .width(imageWidth)
+                .height(imageHeight)
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(height))
 
         Text(
             text = stringResource(R.string.welcome_heading),
