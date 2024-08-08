@@ -21,4 +21,10 @@
     <string name="scan_button_text">Scan</string>
     <string name="take_a_picture_button_text">Take a picture</string>
     <string name="upload_from_gallery_button_text">Upload from gallery</string>
+
+    // Option dialog
+    <string name="option_dialog_title">Select Option</string>
+    <string name="option_dialog_description">Select one of the options below to continue.</string>
+    <string name="option_dialog_take_picture">Take\npicture</string>
+    <string name="option_dialog_select_from_gallery">Select from gallery"</string>
 </resources>
