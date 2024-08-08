@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
             NavigationRoutes.Home.route -> {
-                finishAffinity() // Keluar dari aplikasi
+                finishAffinity()
             }
             else -> {
                 super.onBackPressed()

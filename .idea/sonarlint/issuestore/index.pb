@@ -1476,3 +1476,5 @@ Yapp/src/main/java/com/application/divarizky/autismdetection/ui/viewmodel/HomeVi
 Yapp/src/main/java/com/application/divarizky/autismdetection/data/model/NavigationItems.kt,5\3\53d5d0b5a606b32a4bd770bb3518ed432d1c8683
 ‹
 [app/src/main/java/com/application/divarizky/autismdetection/ui/viewmodel/SharedViewModel.kt,8\a\8a711511020976f71ef4d544fc7a30254883586f
+‰
+Yapp/src/main/java/com/application/divarizky/autismdetection/ui/components/OptionDialog.kt,3\f\3fa9cb5846c6b1701766522bb3be86984b1c5904
