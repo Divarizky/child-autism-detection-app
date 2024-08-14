@@ -7,7 +7,7 @@ import com.application.divarizky.autismdetection.data.model.User
 // Interface untuk UserRepository
 interface UserRepository {
     suspend fun insertUser(user: User)
-    suspend fun login(email: String, password: String): User?
+    suspend fun login(email: String, password: String): Boolean?
     suspend fun getUserById(userId: Int): User?
 }
 
@@ -20,19 +20,30 @@ class UserRepositoryImpl(private val context: Context) : UserRepository {
         userDao.insertUser(user)
     }
 
-    suspend fun getAllUsers(): List<User> {
-        return userDao.getAllUsers()
+    override suspend fun login(email: String, password: String): Boolean {
+        val user = userDao.login(email, password)
+        return if (user != null) {
+            userDao.logoutAllUsers()
+            userDao.updateUser(user.copy(isLoggedIn = true))
+            true
+        } else {
+            false
+        }
     }
 
-    override suspend fun login(email: String, password: String): User? {
-        return userDao.login(email, password)
+    override suspend fun getUserById(userId: Int): User? {
+        return userDao.getUserById(userId)
     }
 
     suspend fun getUserByEmail(email: String): User? {
         return userDao.getUserByEmail(email)
     }
 
-    override suspend fun getUserById(userId: Int): User? {
-        return userDao.getUserById(userId)
+    suspend fun getLoggedInUser(): User? {
+        return userDao.getLoggedInUser()
+    }
+
+    suspend fun logout() {
+        userDao.logoutAllUsers()
     }
 }

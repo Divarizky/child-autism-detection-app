@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +20,7 @@ import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -157,6 +158,7 @@ fun SignUpSection(
             value = username,
             onValueChange = onUsernameChange, // Use the lambda function passed down
             label = "Username",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text) // Set keyboard type for username
         )
         errorMessages[SignUpViewModel.Field.USERNAME]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -169,6 +171,7 @@ fun SignUpSection(
             value = email,
             onValueChange = onEmailChange, // Use the lambda function passed down
             label = "Email",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email) // Set keyboard type for email
         )
         errorMessages[SignUpViewModel.Field.EMAIL]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -181,6 +184,7 @@ fun SignUpSection(
             value = password,
             onValueChange = onPasswordChange, // Use the lambda function passed down
             label = "Password",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // Set keyboard type for email
             isPassword = true
         )
         errorMessages[SignUpViewModel.Field.PASSWORD]?.let { error ->

@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.application.divarizky.autismdetection.data.model.User
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
     companion object {
-        @Volatile private var instance: AppDatabase? = null
+        @Volatile
+        private var instance: AppDatabase? = null
 
         fun getDatabase(context: Context): AppDatabase =
             instance ?: synchronized(this) {
@@ -20,8 +23,11 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context.applicationContext,
-                AppDatabase::class.java, "app_database")
+            Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java, "app_database"
+            )
+                .addMigrations(MIGRATION_1_2)
                 .build()
     }
 }
