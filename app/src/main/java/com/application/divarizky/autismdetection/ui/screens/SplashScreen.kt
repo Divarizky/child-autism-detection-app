@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.divarizky.autismdetection.R
+import com.application.divarizky.autismdetection.ui.theme.Dimens.appNameTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
 import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
 import kotlinx.coroutines.delay
@@ -29,7 +30,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(3000) // Delay for 3 seconds
+        delay(2500) // Delay configuration
         onSplashFinished()
     }
     Box(
@@ -55,13 +56,11 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.ic_white_logo),
                 contentDescription = stringResource(R.string.app_name),
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(85.dp)
             )
             Text(
-                text = "CARE",
-                fontSize = 32.sp,
-                fontFamily = NunitoSansFamily,
-                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.app),
+                style = appNameTextStyle,
                 color = White
             )
         }

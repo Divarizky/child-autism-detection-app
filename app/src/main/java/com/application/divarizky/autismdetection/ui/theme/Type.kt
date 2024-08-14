@@ -39,5 +39,7 @@ val NunitoSansFamily = FontFamily(
     Font(R.font.nunito_sans_regular, FontWeight.Normal),
     Font(R.font.nunito_sans_bold, FontWeight.Bold),
     Font(R.font.nunito_sans_light, FontWeight.Light),
-    Font(R.font.nunito_sans_semi_bold, FontWeight.SemiBold)
+    Font(R.font.nunito_sans_black, FontWeight.Black),
+    Font(R.font.nunito_sans_semi_bold, FontWeight.SemiBold),
+    Font(R.font.nunito_sans_extra_bold, FontWeight.ExtraBold)
 )
