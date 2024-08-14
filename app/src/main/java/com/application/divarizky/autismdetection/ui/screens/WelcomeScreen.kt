@@ -97,7 +97,7 @@ fun BottomButton(navController: NavHostController) {
                     shape = RoundedCornerShape(buttonCornerRadius)
                 )
                 .clickable {
-                    navController.navigate("home_screen")
+                    navController.navigate("login_screen")
                 },
             contentAlignment = Alignment.Center
         ) {

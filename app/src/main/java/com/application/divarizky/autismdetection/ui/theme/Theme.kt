@@ -16,11 +16,13 @@ import androidx.compose.ui.unit.sp
 
 // Define dimensions default configuration for components
 object Dimens {
+
     // Padding configuration
     val paddings = 16.dp
     val height = 20.dp
 
     // Text configuration
+    val appNameTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
     val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp)
     val largeTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 20.sp)
     val mediumTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 18.sp)

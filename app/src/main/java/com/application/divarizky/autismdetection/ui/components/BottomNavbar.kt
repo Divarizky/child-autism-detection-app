@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.ui.theme.LightGrey
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
 import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
-import com.application.divarizky.autismdetection.ui.viewmodel.SharedViewModel
+import com.application.divarizky.autismdetection.navigation.RoutesViewModel
 
 private val BOTTOM_NAV_HEIGHT = 60.dp
 private val ICON_SIZE = 28.dp
@@ -30,15 +30,15 @@ private val ICON_SIZE = 28.dp
 @Composable
 fun BottomNavbar(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = viewModel()
+    routesViewModel: RoutesViewModel = viewModel()
 ) {
-    val currentRoute by rememberUpdatedState(sharedViewModel.currentRoute.value)
+    val currentRoute by rememberUpdatedState(routesViewModel.currentRoute.value)
 
     NavigationBar(
         containerColor = Color.White,
         modifier = Modifier.height(BOTTOM_NAV_HEIGHT)
     ) {
-        sharedViewModel.navigationItems.forEach { item ->
+        routesViewModel.navigationItems.forEach { item ->
             val iconTintColor = if (currentRoute == item.route) MediumBlue else LightGrey
 
             NavigationBarItem(
@@ -62,7 +62,7 @@ fun BottomNavbar(
                 selected = currentRoute == item.route,
                 alwaysShowLabel = true,
                 onClick = {
-                    sharedViewModel.onNavigationItemSelected(item.route)
+                    routesViewModel.onNavigationItemSelected(item.route)
                     navController.navigate(item.route) {
                         launchSingleTop = true
                         restoreState = true

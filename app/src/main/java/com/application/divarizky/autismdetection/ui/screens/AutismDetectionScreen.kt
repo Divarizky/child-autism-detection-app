@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.ui.components.BottomNavbar
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonHeight
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
 import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
@@ -27,16 +28,16 @@ import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
 import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.viewmodel.SharedViewModel
+import com.application.divarizky.autismdetection.navigation.RoutesViewModel
 
 @Composable
 fun AutismDetectionScreen(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel = viewModel()
+    routesViewModel: RoutesViewModel = viewModel()
 ) {
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, sharedViewModel)
+            BottomNavbar(navController, routesViewModel)
         }
     ) { innerPadding ->
         Box(
@@ -133,7 +134,7 @@ fun ActionButtons() {
             colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
+                .height(buttonHeight)
         ) {
             Text(
                 text = stringResource(R.string.upload_from_gallery_button_text),
