@@ -44,6 +44,7 @@ fun CustomTextField(
     focusedBorderColor: Color = MediumBlue,
     unfocusedBorderColor: Color = LightGray,
     unfocusedLabelColor: Color = LightGray,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     val keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text
 
@@ -61,7 +62,7 @@ fun CustomTextField(
             )
         },
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        keyboardOptions = keyboardOptions.copy(keyboardType = keyboardType),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = focusedBorderColor,
             unfocusedBorderColor = unfocusedBorderColor,

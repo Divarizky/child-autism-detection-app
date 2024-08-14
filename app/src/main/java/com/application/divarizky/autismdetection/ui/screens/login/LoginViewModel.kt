@@ -29,6 +29,9 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _loginSuccess = MutableLiveData<Boolean>()
+    val loginSuccess: LiveData<Boolean> = _loginSuccess
+
     private var isValidationAttempted = false
 
     var scrollState: ScrollState by mutableStateOf(ScrollState(0))
@@ -64,7 +67,7 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
         return errors.isEmpty()
     }
 
-    fun login(context: Context, onResult: (User?) -> Unit) {
+    fun login(context: Context) {
         isValidationAttempted = true
         if (!validateFields()) {
             handleLoginError(context, IllegalArgumentException("Validation failed"))
@@ -74,17 +77,16 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val user = userRepository.login(_email.value ?: "", _password.value ?: "")
+                val isSuccess = userRepository.login(_email.value ?: "", _password.value ?: "")
                 _isLoading.value = false
-                if (user != null) {
-                    onResult(user)
-                } else {
-                    handleLoginError(context, Exception("User not found"))
+                _loginSuccess.value = isSuccess
+                if (isSuccess == false) {
+                    handleLoginError(context, Exception("Invalid credentials or user not found"))
                 }
             } catch (e: Exception) {
                 _isLoading.value = false
                 handleLoginError(context, e)
-                onResult(null)
+                _loginSuccess.value = false
             }
         }
     }

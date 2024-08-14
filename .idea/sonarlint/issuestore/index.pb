@@ -3096,3 +3096,5 @@ w
 G.idea/sonarlint/issuestore/a/9/a97df7e99a8610f1a49d9219664c39c0df641921,b\f\bf0fe33eb582273fe755ae1f90fffa0f66a4b7aa
 w
 G.idea/sonarlint/issuestore/a/9/a95658a0a9670c3083827ce33c26ff58bfa13979,9\f\9f6a43ed45bccdc2544bb7d3e924533a3fe20cbb
+‹
+[app/src/main/java/com/application/divarizky/autismdetection/data/local/MigrationDatabase.kt,7\0\70f9d67e2a19f564561a67c082c4672be44929e9

@@ -1,18 +1,10 @@
 package com.application.divarizky.autismdetection.ui.screens.login
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -28,17 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.data.model.User
 import com.application.divarizky.autismdetection.ui.components.AppLogo
 import com.application.divarizky.autismdetection.ui.components.CustomButton
 import com.application.divarizky.autismdetection.ui.components.CustomTextField
-import com.application.divarizky.autismdetection.ui.theme.Black
+import com.application.divarizky.autismdetection.ui.theme.*
 import com.application.divarizky.autismdetection.ui.theme.Dimens.appNameTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonHeight
@@ -47,9 +39,6 @@ import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
 import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
 import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
-import com.application.divarizky.autismdetection.utils.ErrorHandler
 import com.application.divarizky.autismdetection.utils.Validator
 import com.application.divarizky.autismdetection.utils.viewModelFactory
 
@@ -65,15 +54,14 @@ fun LoginScreen(
     val password by viewModel.password.observeAsState("")
     val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
     val isLoading by viewModel.isLoading.observeAsState(false)
+    val loginSuccess by viewModel.loginSuccess.observeAsState(false)
 
-    // Handle button navigation
-    val onLoginSuccess: (User) -> Unit = {
+    // Navigasi ke layar utama jika login berhasil
+    if (loginSuccess) {
         navController.navigate("home_screen")
     }
-    val onSignUpClick: () -> Unit = {
-        navController.navigate("signup_screen")
-    }
 
+    // Isi layar login
     LoginScreenContent(
         email = email,
         onEmailChange = { viewModel.onEmailChange(it) },
@@ -81,18 +69,14 @@ fun LoginScreen(
         onPasswordChange = { viewModel.onPasswordChange(it) },
         errorMessages = errorMessages,
         onLoginClick = {
-            viewModel.login(context) { user ->
-                if (user != null) {
-                    onLoginSuccess(user)
-                } else {
-                    ErrorHandler.handleLoginError(context, Exception("Invalid email or password"))
-                }
-            }
+            viewModel.login(context)
         },
         isLoading = isLoading,
         scrollState = viewModel.scrollState,
         onScrollStateChange = { viewModel.updateScrollState(it) },
-        onSignUpClick = onSignUpClick
+        onSignUpClick = {
+            navController.navigate("signup_screen")
+        }
     )
 }
 
@@ -189,6 +173,7 @@ fun LoginSection(
             value = email,
             onValueChange = onEmailChange,
             label = "Email",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email) // Set keyboard type for email
         )
         errorMessages[LoginViewModel.Field.EMAIL]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -201,7 +186,8 @@ fun LoginSection(
             value = password,
             onValueChange = onPasswordChange,
             label = "Password",
-            isPassword = true
+            isPassword = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password) // Set keyboard type for password
         )
         errorMessages[LoginViewModel.Field.PASSWORD]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)

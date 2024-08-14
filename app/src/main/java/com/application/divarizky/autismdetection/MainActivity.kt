@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.navigation.NavRoutes
 import com.application.divarizky.autismdetection.navigation.NavigationRoutes
-import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
 import com.application.divarizky.autismdetection.navigation.RoutesViewModel
+import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
 
 class MainActivity : ComponentActivity() {
     private val routesViewModel: RoutesViewModel by viewModels()
@@ -35,14 +35,16 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onBackPressed() {
-        when (routesViewModel.currentRoute.value) {
-            NavigationRoutes.AutismDetection.route -> {
-                routesViewModel.onNavigationItemSelected(NavigationRoutes.Home.route)
-                navController.navigate(NavigationRoutes.Home.route) {
-                    popUpTo(NavigationRoutes.Home.route) { inclusive = true }
+        val currentRoute = routesViewModel.currentRoute.value
+
+        when {
+            currentRoute == NavigationRoutes.Main.AutismDetection.route -> {
+                routesViewModel.onNavigationItemSelected(NavigationRoutes.Main.Home.route)
+                navController.navigate(NavigationRoutes.Main.Home.route) {
+                    popUpTo(NavigationRoutes.Main.Home.route) { inclusive = true }
                 }
             }
-            NavigationRoutes.Home.route -> {
+            currentRoute == NavigationRoutes.Main.Home.route -> {
                 finishAffinity()
             }
             else -> {

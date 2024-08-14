@@ -149,8 +149,8 @@ fun FeatureCard(navController: NavHostController, routesViewModel: RoutesViewMod
 
             Button(
                 onClick = {
-                    routesViewModel.onNavigationItemSelected(NavigationRoutes.AutismDetection.route)
-                    navController.navigate(NavigationRoutes.AutismDetection.route)
+                    routesViewModel.onNavigationItemSelected(NavigationRoutes.Main.route)
+                    navController.navigate(NavigationRoutes.Main.route)
                 },
                 shape = RoundedCornerShape(buttonCornerRadius),
                 colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
