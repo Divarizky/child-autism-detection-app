@@ -1,20 +1,25 @@
 package com.application.divarizky.autismdetection.data.repository
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.application.divarizky.autismdetection.data.local.AppDatabase
 import com.application.divarizky.autismdetection.data.model.User
 
-// Interface untuk UserRepository
 interface UserRepository {
     suspend fun insertUser(user: User)
     suspend fun login(email: String, password: String): Boolean?
     suspend fun getUserById(userId: Int): User?
+    fun saveLoginState(isLoggedIn: Boolean)
+    fun isLoggedIn(): Boolean
+    suspend fun logout()
 }
 
-// Implementasi untuk UserRepository
-class UserRepositoryImpl(private val context: Context) : UserRepository {
+// UserRepository implementation
+class UserRepositoryImpl(context: Context) : UserRepository {
 
     private val userDao = AppDatabase.getDatabase(context).userDao()
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
 
     override suspend fun insertUser(user: User) {
         userDao.insertUser(user)
@@ -25,8 +30,10 @@ class UserRepositoryImpl(private val context: Context) : UserRepository {
         return if (user != null) {
             userDao.logoutAllUsers()
             userDao.updateUser(user.copy(isLoggedIn = true))
+            saveLoginState(true)  // Save login state after successful login
             true
         } else {
+            saveLoginState(false)  // If login fails, save login state as false
             false
         }
     }
@@ -35,15 +42,25 @@ class UserRepositoryImpl(private val context: Context) : UserRepository {
         return userDao.getUserById(userId)
     }
 
+    override fun saveLoginState(isLoggedIn: Boolean) {
+        sharedPreferences.edit().putBoolean("isLoggedIn", isLoggedIn).apply()
+    }
+
+    override fun isLoggedIn(): Boolean {
+        return sharedPreferences.getBoolean("isLoggedIn", false)
+    }
+
+    // Function to handle on logout, save login state as false
+    override suspend fun logout() {
+        userDao.logoutAllUsers()
+        saveLoginState(false)
+    }
+
     suspend fun getUserByEmail(email: String): User? {
         return userDao.getUserByEmail(email)
     }
 
     suspend fun getLoggedInUser(): User? {
         return userDao.getLoggedInUser()
-    }
-
-    suspend fun logout() {
-        userDao.logoutAllUsers()
     }
 }

@@ -8,8 +8,10 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.ui.screens.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.application.divarizky.autismdetection.ui.screens.autismdetection.AutismDetectionScreen
 import com.application.divarizky.autismdetection.ui.screens.home.HomeScreen
 import com.application.divarizky.autismdetection.ui.screens.login.LoginScreen
+import com.application.divarizky.autismdetection.ui.screens.settings.SettingScreen
 import com.application.divarizky.autismdetection.ui.screens.signup.SignUpScreen
 
 sealed class NavigationRoutes(val route: String) {

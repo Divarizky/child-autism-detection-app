@@ -9,24 +9,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.divarizky.autismdetection.data.model.User
 import com.application.divarizky.autismdetection.data.repository.UserRepository
 import com.application.divarizky.autismdetection.utils.ErrorHandler.Companion.handleLoginError
 import com.application.divarizky.autismdetection.utils.Validator
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val userRepository: UserRepository, private val validator: Validator) : ViewModel() {
+class LoginViewModel(
+    private val userRepository: UserRepository,
+    private val validator: Validator
+) : ViewModel() {
 
-    private val _email = MutableLiveData("")
+    // Inisialisasi dengan nilai default kosong
+    private val _email = MutableLiveData<String>("")
     val email: LiveData<String> = _email
 
-    private val _password = MutableLiveData("")
+    private val _password = MutableLiveData<String>("")
     val password: LiveData<String> = _password
 
-    private val _errorMessages = MutableLiveData<Map<Field, String?>>()
+    private val _errorMessages = MutableLiveData<Map<Field, String?>>(emptyMap())
     val errorMessages: LiveData<Map<Field, String?>> = _errorMessages
 
-    private val _isLoading = MutableLiveData(false)
+    private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _loginSuccess = MutableLiveData<Boolean>()
@@ -38,6 +41,10 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
 
     fun updateScrollState(newScrollState: ScrollState) {
         scrollState = newScrollState
+    }
+
+    fun setLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
     }
 
     enum class Field { EMAIL, PASSWORD }
@@ -55,11 +62,11 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
     private fun validateFields(): Boolean {
         val errors = mutableMapOf<Field, String?>()
 
-        if (!validator.isValidEmail(_email.value ?: "")) {
+        if (!validator.isValidEmail(_email.value.orEmpty())) {
             errors[Field.EMAIL] = "Invalid email. Please enter a valid email address."
         }
 
-        if (!validator.isValidPassword(_password.value ?: "")) {
+        if (!validator.isValidPassword(_password.value.orEmpty())) {
             errors[Field.PASSWORD] = "Invalid password. Must be at least 8 characters and contain at least one digit."
         }
 
@@ -74,27 +81,29 @@ class LoginViewModel(private val userRepository: UserRepository, private val val
             return
         }
 
-        _isLoading.value = true
+        setLoading(true)
         viewModelScope.launch {
             try {
-                val isSuccess = userRepository.login(_email.value ?: "", _password.value ?: "")
-                _isLoading.value = false
-                _loginSuccess.value = isSuccess
+                val isSuccess = userRepository.login(_email.value.orEmpty(), _password.value.orEmpty())
+                setLoading(false)
+                _loginSuccess.value = isSuccess ?: false
+
                 if (isSuccess == false) {
                     handleLoginError(context, Exception("Invalid credentials or user not found"))
                 }
+
             } catch (e: Exception) {
-                _isLoading.value = false
+                setLoading(false)
                 handleLoginError(context, e)
                 _loginSuccess.value = false
             }
         }
     }
 
-    fun getUserById(userId: Int, onResult: (User?) -> Unit) {
-        viewModelScope.launch {
-            val user = userRepository.getUserById(userId)
-            onResult(user)
-        }
+    fun checkLoginState(): Boolean {
+        setLoading(true)
+        val isLoggedIn = userRepository.isLoggedIn()
+        setLoading(false)
+        return isLoggedIn
     }
 }
