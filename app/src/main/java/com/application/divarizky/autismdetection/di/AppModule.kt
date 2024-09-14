@@ -7,10 +7,13 @@ import com.application.divarizky.autismdetection.data.repository.UserRepositoryI
 interface AppModule {
     val databaseModule: DatabaseModule
     val userRepository: UserRepository
+    val context: Context
 }
 
-class AppModuleImpl(private val context: Context) : AppModule {
-    override val databaseModule: DatabaseModule by lazy { DatabaseModule(context) }
-    override val userRepository: UserRepository by lazy { UserRepositoryImpl(context) }
+class AppModuleImpl(private val appContext: Context) : AppModule {
+    override val context: Context
+        get() = appContext
+    override val databaseModule: DatabaseModule by lazy { DatabaseModule(appContext) }
+    override val userRepository: UserRepository by lazy { UserRepositoryImpl(appContext) }
 }
 

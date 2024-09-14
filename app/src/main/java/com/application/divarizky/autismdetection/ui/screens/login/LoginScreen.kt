@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -50,34 +51,75 @@ fun LoginScreen(
     })
 ) {
     val context = LocalContext.current
-    val email by viewModel.email.observeAsState("")
-    val password by viewModel.password.observeAsState("")
-    val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
+
+    // State for showing the loading indicator
     val isLoading by viewModel.isLoading.observeAsState(false)
-    val loginSuccess by viewModel.loginSuccess.observeAsState(false)
 
-    // Navigasi ke layar utama jika login berhasil
-    if (loginSuccess) {
-        navController.navigate("home_screen")
-    }
-
-    // Isi layar login
-    LoginScreenContent(
-        email = email,
-        onEmailChange = { viewModel.onEmailChange(it) },
-        password = password,
-        onPasswordChange = { viewModel.onPasswordChange(it) },
-        errorMessages = errorMessages,
-        onLoginClick = {
-            viewModel.login(context)
-        },
-        isLoading = isLoading,
-        scrollState = viewModel.scrollState,
-        onScrollStateChange = { viewModel.updateScrollState(it) },
-        onSignUpClick = {
-            navController.navigate("signup_screen")
+    // Check if the user is already logged in
+    if (viewModel.checkLoginState()) {
+        if (isLoading) {
+            // Display loading indicator while navigating to home screen
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
-    )
+
+        // Start navigation after a slight delay to ensure the UI can show the loading indicator
+        LaunchedEffect(Unit) {
+            viewModel.setLoading(true)
+            navController.navigate("home_screen") {
+                popUpTo("login_screen") { inclusive = true }
+            }
+            viewModel.setLoading(false)
+        }
+    } else {
+        val email by viewModel.email.observeAsState("")
+        val password by viewModel.password.observeAsState("")
+        val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
+        val loginSuccess by viewModel.loginSuccess.observeAsState(false)
+
+        // Navigate to home screen if login is successful
+        if (loginSuccess!!) {
+            if (isLoading) {
+                // Display loading indicator while navigating to home screen
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            LaunchedEffect(Unit) {
+                viewModel.setLoading(true)
+                navController.navigate("home_screen") {
+                    popUpTo("login_screen") { inclusive = true }
+                }
+                viewModel.setLoading(false) // Hide loading indicator
+            }
+        } else {
+            // Login screen content
+            LoginScreenContent(
+                email = email,
+                onEmailChange = { viewModel.onEmailChange(it) },
+                password = password,
+                onPasswordChange = { viewModel.onPasswordChange(it) },
+                errorMessages = errorMessages,
+                onLoginClick = {
+                    viewModel.login(context)
+                },
+                isLoading = isLoading,
+                scrollState = viewModel.scrollState,
+                onScrollStateChange = { viewModel.updateScrollState(it) },
+                onSignUpClick = {
+                    navController.navigate("signup_screen")
+                }
+            )
+        }
+    }
 }
 
 @Composable

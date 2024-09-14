@@ -26,7 +26,7 @@ object Dimens {
     val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp)
     val largeTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 20.sp)
     val mediumTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 18.sp)
-    val regularTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp)
+    val regularTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 16.sp)
     val smallTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 12.sp)
     val buttonTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp, fontWeight = FontWeight.Bold)
 

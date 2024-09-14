@@ -35,11 +35,27 @@
     <string name="take_a_picture_button_text">Take a picture</string>
     <string name="upload_from_gallery_button_text">Upload from gallery</string>
 
+    /* CUSTOM DIALOG */
     // Option Dialog
     <string name="option_dialog_title">Select Option</string>
     <string name="option_dialog_description">Select one of the options below to continue.</string>
     <string name="option_dialog_take_picture">Take\npicture</string>
     <string name="option_dialog_select_from_gallery">Select from gallery"</string>
+
+    // Dialog Failed
+    <string name="no_picture_selected">No images selected. Please select or take a picture.</string>
+
+    // Result Dialog Success
+    <string name="title_result_successful">Successful!</string>
+    <string name="autism_detected_message">Detection complete! Your child shows [autism] characteristics. Consult a specialist for further evaluation.</string>
+    <string name="non_autism_detected_message">Detection complete! Your child does not show [autism] characteristics. Consult a specialist if you have any further concerns or questions.</string>
+
+    // Result Dialog Failed
+    <string name="title_result_failed">Oops!</string>
+    <string name="scan_failed_message">Detection failed.  Please try again and ensure your child\'s face is clearly visible.</string>
+
+    <string name="continue_button_text">Continue</string>
+    <string name="try_again_button_text">Try Again</string>
 
     // Settings Screen
     <string name="settings_title">Settings</string>
