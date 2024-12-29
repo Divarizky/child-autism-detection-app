@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens.settings
+package com.application.divarizky.autismdetection.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -12,11 +12,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.navigation.NavRoutes
 import com.application.divarizky.autismdetection.navigation.NavigationRoutes
-import com.application.divarizky.autismdetection.navigation.RoutesViewModel
-import com.application.divarizky.autismdetection.ui.theme.AutismDetectionTheme
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
+import com.application.divarizky.autismdetection.view.theme.AutismDetectionTheme
 
 class MainActivity : ComponentActivity() {
-    private val routesViewModel: RoutesViewModel by viewModels()
+    private val bottomNavbarViewModel: BottomNavbarViewModel by viewModels()
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,18 +28,18 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     navController = rememberNavController()
-                    NavRoutes(navController = navController, routesViewModel = routesViewModel)
+                    NavRoutes(navController = navController, bottomNavbarViewModel = bottomNavbarViewModel)
                 }
             }
         }
     }
 
     override fun onBackPressed() {
-        val currentRoute = routesViewModel.currentRoute.value
+        val currentRoute = bottomNavbarViewModel.currentRoute.value
 
         when {
             currentRoute == NavigationRoutes.Main.AutismDetection.route -> {
-                routesViewModel.onNavigationItemSelected(NavigationRoutes.Main.Home.route)
+                bottomNavbarViewModel.onNavigationItemSelected(NavigationRoutes.Main.Home.route)
                 navController.navigate(NavigationRoutes.Main.Home.route) {
                     popUpTo(NavigationRoutes.Main.Home.route) { inclusive = true }
                 }

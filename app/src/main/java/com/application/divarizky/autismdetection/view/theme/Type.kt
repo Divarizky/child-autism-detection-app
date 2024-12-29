@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.theme
+package com.application.divarizky.autismdetection.view.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

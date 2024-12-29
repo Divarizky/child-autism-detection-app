@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.components
+package com.application.divarizky.autismdetection.view.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
 
 @Composable
 fun CustomButton(

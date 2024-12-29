@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.components
+package com.application.divarizky.autismdetection.view.components
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.application.divarizky.autismdetection.ui.theme.LightGrey
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
-import com.application.divarizky.autismdetection.navigation.RoutesViewModel
+import com.application.divarizky.autismdetection.view.theme.LightGrey
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 
 private val BOTTOM_NAV_HEIGHT = 60.dp
 private val ICON_SIZE = 28.dp
@@ -30,15 +30,15 @@ private val ICON_SIZE = 28.dp
 @Composable
 fun BottomNavbar(
     navController: NavHostController,
-    routesViewModel: RoutesViewModel = viewModel()
+    bottomNavbarViewModel: BottomNavbarViewModel = viewModel()
 ) {
-    val currentRoute by rememberUpdatedState(routesViewModel.currentRoute.value)
+    val currentRoute by rememberUpdatedState(bottomNavbarViewModel.currentRoute.value)
 
     NavigationBar(
         containerColor = Color.White,
         modifier = Modifier.height(BOTTOM_NAV_HEIGHT)
     ) {
-        routesViewModel.navigationItems.forEach { item ->
+        bottomNavbarViewModel.navigationItems.forEach { item ->
             val iconTintColor = if (currentRoute == item.route) MediumBlue else LightGrey
 
             NavigationBarItem(
@@ -62,7 +62,7 @@ fun BottomNavbar(
                 selected = currentRoute == item.route,
                 alwaysShowLabel = true,
                 onClick = {
-                    routesViewModel.onNavigationItemSelected(item.route)
+                    bottomNavbarViewModel.onNavigationItemSelected(item.route)
                     navController.navigate(item.route) {
                         launchSingleTop = true
                         restoreState = true

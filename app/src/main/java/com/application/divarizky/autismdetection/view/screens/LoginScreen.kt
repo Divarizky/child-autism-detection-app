@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens.login
+package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
@@ -25,34 +25,33 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.components.AppLogo
-import com.application.divarizky.autismdetection.ui.components.CustomButton
-import com.application.divarizky.autismdetection.ui.components.CustomTextField
-import com.application.divarizky.autismdetection.ui.theme.*
-import com.application.divarizky.autismdetection.ui.theme.Dimens.appNameTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.utils.Validator
-import com.application.divarizky.autismdetection.utils.viewModelFactory
+import com.application.divarizky.autismdetection.view.components.AppLogo
+import com.application.divarizky.autismdetection.view.components.CustomButton
+import com.application.divarizky.autismdetection.view.components.CustomTextField
+import com.application.divarizky.autismdetection.view.theme.*
+import com.application.divarizky.autismdetection.view.theme.Dimens.appNameTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.largeTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    viewModel: LoginViewModel = viewModel(factory = viewModelFactory {
-        LoginViewModel(MyApp.appModule.userRepository, Validator)
-    })
+    viewModel: LoginViewModel,
+    navController: NavController
 ) {
+
     val context = LocalContext.current
 
-    // State for showing the loading indicator
     val isLoading by viewModel.isLoading.observeAsState(false)
 
     // Check if the user is already logged in

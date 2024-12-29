@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.components
+package com.application.divarizky.autismdetection.view.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,18 +17,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.height
-import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.height
+import com.application.divarizky.autismdetection.view.theme.Dimens.imageSize
+import com.application.divarizky.autismdetection.view.theme.Dimens.largeTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.GreenColor
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.RedColor
 
 @Composable
 fun OptionDialog(
@@ -75,7 +81,7 @@ fun OptionDialog(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = stringResource(R.string.option_dialog_take_picture),
+                                text = stringResource(R.string.take_picture),
                                 textAlign = TextAlign.Center,
                                 style = buttonTextStyle
                             )
@@ -90,7 +96,7 @@ fun OptionDialog(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = stringResource(R.string.option_dialog_select_from_gallery),
+                                text = stringResource(R.string.select_from_gallery_button_text),
                                 textAlign = TextAlign.Center,
                                 style = buttonTextStyle
                             )
@@ -109,7 +115,7 @@ fun OptionDialog(
 @Composable
 fun DialogFailed(
     showDialog: Boolean,
-    onTryAgain: () -> Unit
+    onTryAgain: () -> Unit,
 ){
     if (showDialog) {
         AlertDialog(
@@ -119,13 +125,11 @@ fun DialogFailed(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    // Replace with appropriate icon for failure
-                    // Example: Icon(painter = painterResource(id = R.drawable.failed_icon), contentDescription = null)
-                    Text(
-                        text = "❌", // Ini hanya contoh, ganti dengan ikon yang sesuai
-                        textAlign = TextAlign.Center,
-                        style = largeTextStyle,
-                        fontWeight = FontWeight.Bold
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_failed),
+                        contentDescription = "Failed Icon",
+                        tint = RedColor,
+                        modifier = Modifier.size(imageSize)
                     )
                 }
             },
@@ -151,7 +155,7 @@ fun DialogFailed(
                 Button(
                     onClick = onTryAgain,
                     shape = RoundedCornerShape(buttonCornerRadius),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    colors = ButtonDefaults.buttonColors(containerColor = RedColor),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -169,8 +173,9 @@ fun DialogFailed(
 @Composable
 fun ResultDialogSuccess(
     showDialog: Boolean,
-    isAutismDetected: Boolean, // True jika autism terdeteksi, false jika non-autism
-    onContinue: () -> Unit
+    isAutismDetected: Boolean,
+    onContinue: () -> Unit,
+    message: String
 ) {
     if (showDialog) {
         AlertDialog(
@@ -180,13 +185,11 @@ fun ResultDialogSuccess(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    // Replace with appropriate icon for success
-                    // Example: Icon(painter = painterResource(id = R.drawable.success_icon), contentDescription = null)
-                    Text(
-                        text = "✔️", // Ini hanya contoh, ganti dengan ikon yang sesuai
-                        textAlign = TextAlign.Center,
-                        style = largeTextStyle,
-                        fontWeight = FontWeight.Bold
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_success),
+                        contentDescription = "Success Icon",
+                        tint = GreenColor,
+                        modifier = Modifier.size(imageSize)
                     )
                 }
             },
@@ -202,11 +205,7 @@ fun ResultDialogSuccess(
                     )
                     Spacer(modifier = Modifier.height(height))
                     Text(
-                        text = if (isAutismDetected) {
-                            stringResource(id = R.string.autism_detected_message)
-                        } else {
-                            stringResource(id = R.string.non_autism_detected_message)
-                        },
+                        text = message,
                         textAlign = TextAlign.Center,
                         style = regularTextStyle
                     )
@@ -216,7 +215,7 @@ fun ResultDialogSuccess(
                 Button(
                     onClick = onContinue,
                     shape = RoundedCornerShape(buttonCornerRadius),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                    colors = ButtonDefaults.buttonColors(containerColor = GreenColor),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -234,7 +233,8 @@ fun ResultDialogSuccess(
 @Composable
 fun ResultDialogFailed(
     showDialog: Boolean,
-    onTryAgain: () -> Unit
+    onTryAgain: () -> Unit,
+    message: String
 ) {
     if (showDialog) {
         AlertDialog(
@@ -244,13 +244,11 @@ fun ResultDialogFailed(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    // Replace with appropriate icon for failure
-                    // Example: Icon(painter = painterResource(id = R.drawable.failed_icon), contentDescription = null)
-                    Text(
-                        text = "❌", // Ini hanya contoh, ganti dengan ikon yang sesuai
-                        textAlign = TextAlign.Center,
-                        style = largeTextStyle,
-                        fontWeight = FontWeight.Bold
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_failed),
+                        contentDescription = "Failed Icon",
+                        tint = RedColor,
+                        modifier = Modifier.size(imageSize)
                     )
                 }
             },
@@ -266,7 +264,7 @@ fun ResultDialogFailed(
                     )
                     Spacer(modifier = Modifier.height(height))
                     Text(
-                        text = stringResource(id = R.string.scan_failed_message),
+                        text = message,
                         textAlign = TextAlign.Center,
                         style = regularTextStyle
                     )
@@ -276,7 +274,7 @@ fun ResultDialogFailed(
                 Button(
                     onClick = onTryAgain,
                     shape = RoundedCornerShape(buttonCornerRadius),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                    colors = ButtonDefaults.buttonColors(containerColor = RedColor),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -296,8 +294,9 @@ fun ResultDialogFailed(
 fun ResultDialogSuccessPreview() {
     ResultDialogSuccess(
         showDialog = true,
-        isAutismDetected = true, // Change to false for non-autism
-        onContinue = {}
+        isAutismDetected = true,
+        onContinue = {},
+        message = "This is a message"
     )
 }
 
@@ -306,7 +305,8 @@ fun ResultDialogSuccessPreview() {
 fun ResultDialogFailedPreview() {
     ResultDialogFailed(
         showDialog = true,
-        onTryAgain = {}
+        onTryAgain = {},
+        message = "This is a message"
     )
 }
 

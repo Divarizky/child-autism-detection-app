@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.theme
+package com.application.divarizky.autismdetection.view.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -36,6 +36,7 @@ object Dimens {
     val buttonHeight = 50.dp
 
     // Images configuration
+    val imageSize = 50.dp
     val imageWidth = 270.dp
     val imageHeight = 180.dp
     val cornerRadius = 16.dp
