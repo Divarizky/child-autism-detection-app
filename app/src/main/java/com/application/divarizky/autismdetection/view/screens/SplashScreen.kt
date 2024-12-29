@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens
+package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,14 +17,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.theme.Dimens.appNameTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.NunitoSansFamily
+import com.application.divarizky.autismdetection.view.theme.Dimens.appNameTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import kotlinx.coroutines.delay
 
 @Composable

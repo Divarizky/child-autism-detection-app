@@ -1,11 +1,11 @@
-package com.application.divarizky.autismdetection.navigation
+package com.application.divarizky.autismdetection.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.data.model.NavigationItems
 
-class RoutesViewModel : ViewModel() {
+class BottomNavbarViewModel : ViewModel() {
 
     // Bottom navigation items
     private val _navigationItems = listOf(

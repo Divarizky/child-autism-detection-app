@@ -1,5 +1,6 @@
-package com.application.divarizky.autismdetection.ui.screens.autismdetection
+package com.application.divarizky.autismdetection.view.screens
 
+import android.Manifest
 import android.content.Intent
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -32,55 +33,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.navigation.RoutesViewModel
-import com.application.divarizky.autismdetection.ui.components.BottomNavbar
-import com.application.divarizky.autismdetection.ui.components.DialogFailed
-import com.application.divarizky.autismdetection.ui.components.OptionDialog
-import com.application.divarizky.autismdetection.ui.components.ResultDialogFailed
-import com.application.divarizky.autismdetection.ui.components.ResultDialogSuccess
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
+import com.application.divarizky.autismdetection.view.components.BottomNavbar
+import com.application.divarizky.autismdetection.view.components.OptionDialog
+import com.application.divarizky.autismdetection.view.components.ResultDialogFailed
+import com.application.divarizky.autismdetection.view.components.ResultDialogSuccess
+import com.application.divarizky.autismdetection.view.theme.Dimens
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.utils.ImageHandler
-import com.application.divarizky.autismdetection.utils.viewModelFactory
+import com.application.divarizky.autismdetection.viewmodel.AutismViewModel
+import com.application.divarizky.autismdetection.viewmodel.DetectionResult
 
 @Composable
 fun AutismDetectionScreen(
-    navController: NavHostController,
-    routesViewModel: RoutesViewModel = viewModel(),
-    viewModel: AutismViewModel = viewModel(factory = viewModelFactory {
-        AutismViewModel(MyApp.appModule.userRepository, MyApp.appModule.context)
-    })
+    viewModel: AutismViewModel,
+    bottomNavbarViewModel: BottomNavbarViewModel,
+    navController: NavHostController
 ) {
     val context = LocalContext.current
     val imageHandler = remember { ImageHandler() }
 
-    // Permissions for camera and read storage (gallery)
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val cameraGranted = permissions[android.Manifest.permission.CAMERA] ?: false
         val readStorageGranted = permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
 
-        // If permissions is granted and open option dialog
         if (cameraGranted && readStorageGranted) {
             viewModel.onPermissionsGranted()
         } else {
-            // If permissions is not granted
             viewModel.handlePermissionResult(false)
         }
     }
 
-    // Launchers for camera and gallery
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -95,18 +88,17 @@ fun AutismDetectionScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, routesViewModel)
+            BottomNavbar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(paddings)
+                .padding(Dimens.paddings)
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 Header()
                 Spacer(modifier = Modifier.weight(1f))
@@ -116,8 +108,8 @@ fun AutismDetectionScreen(
                     onTakePicture = {
                         permissionLauncher.launch(
                             arrayOf(
-                                android.Manifest.permission.CAMERA,
-                                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
                             )
                         )
                     },
@@ -139,7 +131,7 @@ fun AutismDetectionScreen(
                         }
                     },
                     onScan = {
-                        viewModel.runModelPrediction()
+                        viewModel.runModelPrediction(context)
                     },
                     viewModel = viewModel
                 )
@@ -149,39 +141,10 @@ fun AutismDetectionScreen(
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
-            } else if (viewModel.showPredictionDialog.value) {
-                when (viewModel.detectionResult.value) {
-                    DetectionResult.AUTISTIC -> {
-                        ResultDialogSuccess(
-                            showDialog = true,
-                            isAutismDetected = true,
-                            onContinue = { viewModel.dismissPredictionDialog() }
-                        )
-                    }
-                    DetectionResult.NON_AUTISTIC -> {
-                        ResultDialogSuccess(
-                            showDialog = true,
-                            isAutismDetected = false,
-                            onContinue = { viewModel.dismissPredictionDialog() }
-                        )
-                    }
-                    DetectionResult.SCAN_FAILED -> {
-                        ResultDialogFailed(
-                            showDialog = true,
-                            onTryAgain = { viewModel.dismissPredictionDialog() }
-                        )
-                    }
-                    DetectionResult.FAILED -> {
-                        DialogFailed(
-                            showDialog = true,
-                            onTryAgain = { viewModel.dismissPredictionDialog() }
-                        )
-                    }
-                    else -> Unit
-                }
             }
 
-            // Show OptionDialog if permissions are granted
+            DetectionResultDialog(viewModel)
+
             OptionDialog(
                 showDialog = viewModel.showDialog.value,
                 onDismissRequest = viewModel::onDialogDismiss,
@@ -211,13 +174,12 @@ fun AutismDetectionScreen(
 fun Header() {
     Box(
         contentAlignment = Alignment.TopCenter,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(R.string.autism_detection_screen_title),
             textAlign = TextAlign.Center,
-            style = titleTextStyle,
+            style = Dimens.titleTextStyle,
             fontWeight = FontWeight.Bold
         )
     }
@@ -228,19 +190,17 @@ fun ScanImage() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_scan),
             contentDescription = stringResource(R.string.scan_image_description),
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .width(imageWidth)
-                .height(imageHeight)
+                .width(Dimens.imageWidth)
+                .height(Dimens.imageHeight)
         )
         Spacer(modifier = Modifier.height(20.dp))
-
         Text(
             textAlign = TextAlign.Center,
             text = stringResource(R.string.autism_detection_screen_support_text),
@@ -257,9 +217,10 @@ fun ActionButtons(
     onScan: () -> Unit,
     viewModel: AutismViewModel
 ) {
+    val context = LocalContext.current
+
     Column(
-        modifier = Modifier
-            .padding(bottom = 16.dp),
+        modifier = Modifier.padding(bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
@@ -280,7 +241,7 @@ fun ActionButtons(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = onScan,
+            onClick = { viewModel.runModelPrediction(context) },
             shape = RoundedCornerShape(buttonCornerRadius),
             colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
             modifier = Modifier
@@ -292,6 +253,30 @@ fun ActionButtons(
                 text = stringResource(R.string.scan_button_text),
                 style = buttonTextStyle
             )
+        }
+    }
+}
+
+@Composable
+fun DetectionResultDialog(viewModel: AutismViewModel) {
+    if (viewModel.showPredictionDialog.value) {
+        when (viewModel.detectionResult.value) {
+            DetectionResult.AUTISTIC, DetectionResult.NON_AUTISTIC -> {
+                ResultDialogSuccess(
+                    showDialog = true,
+                    isAutismDetected = viewModel.detectionResult.value == DetectionResult.AUTISTIC,
+                    onContinue = { viewModel.dismissPredictionDialog() },
+                    message = viewModel.predictionMessage.value
+                )
+            }
+            DetectionResult.SCAN_FAILED, DetectionResult.FAILED -> {
+                ResultDialogFailed(
+                    showDialog = true,
+                    onTryAgain = { viewModel.dismissPredictionDialog() },
+                    message = viewModel.predictionMessage.value
+                )
+            }
+            else -> Unit
         }
     }
 }

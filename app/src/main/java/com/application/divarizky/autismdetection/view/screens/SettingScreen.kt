@@ -1,9 +1,8 @@
-package com.application.divarizky.autismdetection.ui.screens.settings
+package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -29,56 +28,45 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.data.model.User
-import com.application.divarizky.autismdetection.data.repository.UserRepository
-import com.application.divarizky.autismdetection.navigation.RoutesViewModel
-import com.application.divarizky.autismdetection.ui.components.BottomNavbar
-import com.application.divarizky.autismdetection.ui.components.CustomTextField
-import com.application.divarizky.autismdetection.ui.theme.Dimens
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.cornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.height
-import com.application.divarizky.autismdetection.ui.theme.Dimens.mediumTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.LightGrey
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.White
-import com.application.divarizky.autismdetection.utils.viewModelFactory
+import com.application.divarizky.autismdetection.view.components.BottomNavbar
+import com.application.divarizky.autismdetection.view.theme.Dimens
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.height
+import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.LightGrey
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
+import com.application.divarizky.autismdetection.view.theme.White
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
+import com.application.divarizky.autismdetection.viewmodel.SettingViewModel
 
 @Composable
 fun SettingScreen(
-    navController: NavHostController,
-    routesViewModel: RoutesViewModel = viewModel(),
-    settingViewModel: SettingViewModel = viewModel(factory = viewModelFactory {
-        SettingViewModel(MyApp.appModule.userRepository)
-    })
+    viewModel: SettingViewModel,
+    bottomNavbarViewModel: BottomNavbarViewModel,
+    navController: NavHostController
 ) {
-    val user by settingViewModel.user.observeAsState()
+    val user by viewModel.user.observeAsState()
 
-    // Get the ID of the currently logged in user
-    val currentUserId = 1
-
+    // Mengambil data ID pengguna yang saat ini Login
     LaunchedEffect(Unit) {
-        settingViewModel.loadUser(currentUserId)
+        viewModel.loadUser(1)
     }
 
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, routesViewModel)
+            BottomNavbar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Column(
@@ -92,7 +80,9 @@ fun SettingScreen(
             Spacer(modifier = Modifier.height(paddings))
             IllustrationImage()
             Spacer(modifier = Modifier.height(paddings))
-            SettingsContent(user, settingViewModel, navController)
+            SettingsContent(user, viewModel, navController, onAboutClick = {
+                navController.navigate("about_screen")
+            })
         }
     }
 }
@@ -135,7 +125,8 @@ fun IllustrationImage() {
 fun SettingsContent(
     user: User?,
     settingViewModel: SettingViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    onAboutClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -213,12 +204,14 @@ fun SettingsContent(
             )
         }
 
-        Text(
-            text = stringResource(R.string.about_us),
-            textAlign = TextAlign.Left,
-            fontWeight = FontWeight.Bold,
-            style = regularTextStyle,
-            color = MediumBlue,
+        ClickableText(
+            text = AnnotatedString(stringResource(id = R.string.about_us)),
+            onClick = { onAboutClick() },
+            style = TextStyle.Default.copy(
+                fontWeight = FontWeight.Bold,
+                fontFamily = NunitoSansFamily,
+                color = MediumBlue
+            ),
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(horizontal = paddings, vertical = paddings)
@@ -252,65 +245,4 @@ fun SettingsContent(
 // Function to mask the password with asterisks
 fun maskPassword(password: String): String {
     return "*".repeat(password.length)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SettingScreenPreview() {
-    // Implementasi UserRepository mock untuk preview
-    val previewViewModel =
-        viewModel<SettingViewModel>(factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(SettingViewModel::class.java)) {
-                    return SettingViewModel(object : UserRepository {
-                        override suspend fun insertUser(user: User) {
-                            // Mock implementation
-                        }
-
-                        override suspend fun login(email: String, password: String): Boolean {
-                            return true // Mock login success
-                        }
-
-                        override suspend fun getUserById(userId: Int): User {
-                            return User(
-                                username = "user",
-                                email = "user@example.com",
-                                password = "password123"
-                            )
-                        }
-
-                        override fun saveLoginState(isLoggedIn: Boolean) {
-                            // Mock implementation
-                        }
-
-                        override fun isLoggedIn(): Boolean {
-                            return true // Mock logged in state
-                        }
-
-                        override suspend fun logout() {
-                            // Mock implementation
-                        }
-
-                        suspend fun getUserByEmail(email: String): User? {
-                            return User(username = "user", email = email, password = "password123")
-                        }
-
-                        suspend fun getLoggedInUser(): User? {
-                            return User(
-                                username = "user",
-                                email = "user@example.com",
-                                password = "password123"
-                            )
-                        }
-                    }) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        })
-
-    SettingScreen(
-        navController = rememberNavController(),
-        routesViewModel = RoutesViewModel(),
-        settingViewModel = previewViewModel
-    )
 }

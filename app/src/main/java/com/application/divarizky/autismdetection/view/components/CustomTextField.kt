@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.components
+package com.application.divarizky.autismdetection.view.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,9 +27,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

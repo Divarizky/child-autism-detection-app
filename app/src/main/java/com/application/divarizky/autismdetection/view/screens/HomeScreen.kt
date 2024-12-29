@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens.home
+package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,30 +31,30 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.navigation.NavigationRoutes
-import com.application.divarizky.autismdetection.ui.components.BottomNavbar
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.cornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.height
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
-import com.application.divarizky.autismdetection.ui.theme.Dimens.largeTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.smallTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.White
-import com.application.divarizky.autismdetection.navigation.RoutesViewModel
+import com.application.divarizky.autismdetection.view.components.BottomNavbar
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.cornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.height
+import com.application.divarizky.autismdetection.view.theme.Dimens.imageHeight
+import com.application.divarizky.autismdetection.view.theme.Dimens.imageWidth
+import com.application.divarizky.autismdetection.view.theme.Dimens.largeTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.White
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    routesViewModel: RoutesViewModel = viewModel()
+    bottomNavbarViewModel: BottomNavbarViewModel = viewModel()
 ) {
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, routesViewModel)
+            BottomNavbar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Box(
@@ -64,19 +64,19 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .padding(paddings)
         ) {
-            HomeContent(navController, routesViewModel)
+            HomeContent(navController, bottomNavbarViewModel)
         }
     }
 }
 
 @Composable
-fun HomeContent(navController: NavHostController, routesViewModel: RoutesViewModel) {
+fun HomeContent(navController: NavHostController, bottomNavbarViewModel: BottomNavbarViewModel) {
     Column {
         Spacer(modifier = Modifier.height(height))
         GreetingSection()
         ImageSection()
         Spacer(modifier = Modifier.height(height))
-        FeatureCard(navController, routesViewModel)
+        FeatureCard(navController, bottomNavbarViewModel)
     }
 }
 
@@ -117,7 +117,7 @@ fun ImageSection() {
 }
 
 @Composable
-fun FeatureCard(navController: NavHostController, routesViewModel: RoutesViewModel) {
+fun FeatureCard(navController: NavHostController, bottomNavbarViewModel: BottomNavbarViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -149,7 +149,7 @@ fun FeatureCard(navController: NavHostController, routesViewModel: RoutesViewMod
 
             Button(
                 onClick = {
-                    routesViewModel.onNavigationItemSelected(NavigationRoutes.Main.route)
+                    bottomNavbarViewModel.onNavigationItemSelected(NavigationRoutes.Main.route)
                     navController.navigate(NavigationRoutes.Main.AutismDetection.route)
                 },
                 shape = RoundedCornerShape(buttonCornerRadius),

@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens.signup
+package com.application.divarizky.autismdetection.viewmodel
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.getValue

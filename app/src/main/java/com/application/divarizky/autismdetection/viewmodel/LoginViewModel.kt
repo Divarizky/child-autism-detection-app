@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens.login
+package com.application.divarizky.autismdetection.viewmodel
 
 import android.content.Context
 import androidx.compose.foundation.ScrollState

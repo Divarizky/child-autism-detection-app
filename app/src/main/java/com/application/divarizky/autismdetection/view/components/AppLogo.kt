@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.components
+package com.application.divarizky.autismdetection.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

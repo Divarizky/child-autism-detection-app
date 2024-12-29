@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.application.divarizky.autismdetection.data.model.User
 
 @Database(entities = [User::class], version = 2, exportSchema = false)

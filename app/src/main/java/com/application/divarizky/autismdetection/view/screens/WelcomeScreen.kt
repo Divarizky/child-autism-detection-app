@@ -1,4 +1,4 @@
-package com.application.divarizky.autismdetection.ui.screens
+package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,15 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.ui.theme.Dimens.buttonCornerRadius
-import com.application.divarizky.autismdetection.ui.theme.Dimens.height
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageHeight
-import com.application.divarizky.autismdetection.ui.theme.Dimens.imageWidth
-import com.application.divarizky.autismdetection.ui.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.ui.theme.Dimens.regularTextStyle
-import com.application.divarizky.autismdetection.ui.theme.Dimens.titleTextStyle
-import com.application.divarizky.autismdetection.ui.theme.MediumBlue
-import com.application.divarizky.autismdetection.ui.theme.White
+import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
+import com.application.divarizky.autismdetection.view.theme.Dimens.height
+import com.application.divarizky.autismdetection.view.theme.Dimens.imageHeight
+import com.application.divarizky.autismdetection.view.theme.Dimens.imageWidth
+import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
+import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.White
 
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
