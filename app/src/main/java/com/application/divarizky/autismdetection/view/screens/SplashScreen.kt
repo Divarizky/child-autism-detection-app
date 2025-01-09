@@ -19,16 +19,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.view.theme.Dimens.appNameTextStyle
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onSplashFinished: () -> Unit) {
+fun SplashScreen(onSplashFinished: (Boolean) -> Unit) {
     LaunchedEffect(Unit) {
-        delay(2500) // Delay configuration
-        onSplashFinished()
+        delay(2500) // Durasi splash screen
+        val isUserLoggedIn = MyApp.appModule.userRepository.isLoggedIn()
+        onSplashFinished(isUserLoggedIn)
     }
     Box(
         modifier = Modifier

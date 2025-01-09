@@ -100,7 +100,7 @@ class LoginViewModel(
         }
     }
 
-    fun checkLoginState(): Boolean {
+    fun checkLoginStatus(): Boolean {
         setLoading(true)
         val isLoggedIn = userRepository.isLoggedIn()
         setLoading(false)

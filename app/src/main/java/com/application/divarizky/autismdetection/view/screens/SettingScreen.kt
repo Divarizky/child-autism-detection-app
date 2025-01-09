@@ -3,6 +3,7 @@ package com.application.divarizky.autismdetection.view.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,9 +35,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.data.model.User
+import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
 import com.application.divarizky.autismdetection.view.components.BottomNavbar
 import com.application.divarizky.autismdetection.view.theme.Dimens
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
@@ -55,7 +59,7 @@ import com.application.divarizky.autismdetection.viewmodel.SettingViewModel
 fun SettingScreen(
     viewModel: SettingViewModel,
     bottomNavbarViewModel: BottomNavbarViewModel,
-    navController: NavHostController
+    navController: NavController
 ) {
     val user by viewModel.user.observeAsState()
 
@@ -66,7 +70,7 @@ fun SettingScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, bottomNavbarViewModel)
+            BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Column(
@@ -125,7 +129,7 @@ fun IllustrationImage() {
 fun SettingsContent(
     user: User?,
     settingViewModel: SettingViewModel,
-    navController: NavHostController,
+    navController: NavController,
     onAboutClick: () -> Unit
 ) {
     Column(
@@ -134,7 +138,7 @@ fun SettingsContent(
             .fillMaxWidth()
             .fillMaxHeight()
             .background(
-                Color.White,
+                MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(topStart = paddings, topEnd = paddings)
             )
     ) {
@@ -152,7 +156,7 @@ fun SettingsContent(
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        // Display email
+        // Email section
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -162,12 +166,12 @@ fun SettingsContent(
                     color = LightGrey,
                     shape = RoundedCornerShape(buttonCornerRadius)
                 )
-                .padding(paddings) // Padding inside the border
+                .padding(paddings)
         ) {
             Text(
                 text = user?.email.orEmpty(),
                 style = regularTextStyle,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -185,7 +189,7 @@ fun SettingsContent(
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        // Display password
+        // Password section
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -195,26 +199,27 @@ fun SettingsContent(
                     color = LightGrey,
                     shape = RoundedCornerShape(buttonCornerRadius)
                 )
-                .padding(paddings) // Padding inside the border
+                .padding(paddings)
         ) {
             Text(
                 text = user?.password?.let { maskPassword(it) }.orEmpty(),
                 style = regularTextStyle,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
-        ClickableText(
-            text = AnnotatedString(stringResource(id = R.string.about_us)),
-            onClick = { onAboutClick() },
-            style = TextStyle.Default.copy(
-                fontWeight = FontWeight.Bold,
-                fontFamily = NunitoSansFamily,
-                color = MediumBlue
-            ),
+        Text(
             modifier = Modifier
                 .align(Alignment.Start)
-                .padding(horizontal = paddings, vertical = paddings)
+                .clickable { onAboutClick() }
+                .padding(horizontal = paddings, vertical = paddings),
+            text = stringResource(id = R.string.about_us),
+            style = TextStyle(
+                fontFamily = NunitoSansFamily,
+                fontSize = regularTextStyle.fontSize,
+                color = MediumBlue,
+                fontWeight = FontWeight.Bold
+            )
         )
 
         Spacer(modifier = Modifier.height(height))
@@ -237,12 +242,13 @@ fun SettingsContent(
             Text(
                 text = stringResource(R.string.logout),
                 style = buttonTextStyle,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
 }
 
-// Function to mask the password with asterisks
+// Fungsi untuk mengubah password menjadi asterik "*"
 fun maskPassword(password: String): String {
     return "*".repeat(password.length)
 }

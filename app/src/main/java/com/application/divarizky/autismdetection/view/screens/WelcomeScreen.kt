@@ -1,5 +1,6 @@
 package com.application.divarizky.autismdetection.view.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
@@ -38,7 +39,7 @@ import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.view.theme.White
 
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(navController: NavController) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -82,7 +83,7 @@ fun ContentSection() {
 }
 
 @Composable
-fun BottomButton(navController: NavHostController) {
+fun BottomButton(navController: NavController) {
     Box(
         contentAlignment = Alignment.BottomEnd,
         modifier = Modifier
