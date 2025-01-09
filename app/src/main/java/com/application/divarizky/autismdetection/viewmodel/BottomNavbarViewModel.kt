@@ -17,7 +17,7 @@ class BottomNavbarViewModel : ViewModel() {
         NavigationItems(
             label = "Scan",
             icon = R.drawable.ic_scan,
-            route = "autism_detection_screen"
+            route = "detection_screen"
         ),
         NavigationItems(
             label = "Settings",

@@ -34,9 +34,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
+import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
 import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 import com.application.divarizky.autismdetection.view.components.BottomNavbar
 import com.application.divarizky.autismdetection.view.components.OptionDialog
@@ -56,7 +58,7 @@ import com.application.divarizky.autismdetection.viewmodel.DetectionResult
 fun AutismDetectionScreen(
     viewModel: AutismViewModel,
     bottomNavbarViewModel: BottomNavbarViewModel,
-    navController: NavHostController
+    navController: NavController
 ) {
     val context = LocalContext.current
     val imageHandler = remember { ImageHandler() }
@@ -88,7 +90,7 @@ fun AutismDetectionScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, bottomNavbarViewModel)
+            BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Box(

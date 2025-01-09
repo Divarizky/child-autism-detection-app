@@ -23,7 +23,7 @@ object Dimens {
 
     // Text configuration
     val appNameTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
-    val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp)
+    val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp, fontWeight = FontWeight.Bold)
     val largeTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 20.sp)
     val mediumTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 18.sp)
     val regularTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 16.sp)

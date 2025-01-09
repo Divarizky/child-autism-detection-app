@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,11 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.navigation.NavigationRoutes
-import com.application.divarizky.autismdetection.view.components.BottomNavbar
+import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.cornerRadius
@@ -49,12 +49,12 @@ import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
+    navController: NavController,
     bottomNavbarViewModel: BottomNavbarViewModel = viewModel()
 ) {
     Scaffold(
         bottomBar = {
-            BottomNavbar(navController, bottomNavbarViewModel)
+            BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
         Box(
@@ -70,7 +70,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeContent(navController: NavHostController, bottomNavbarViewModel: BottomNavbarViewModel) {
+fun HomeContent(navController: NavController, bottomNavbarViewModel: BottomNavbarViewModel) {
     Column {
         Spacer(modifier = Modifier.height(height))
         GreetingSection()
@@ -90,12 +90,12 @@ fun GreetingSection() {
             text = "Hi, Divarizky",
             style = titleTextStyle,
             fontWeight = FontWeight.Bold,
-            color = White
+            color = MaterialTheme.colorScheme.onPrimary
         )
         Text(
             text = stringResource(R.string.home_screen_tagline),
             style = regularTextStyle,
-            color = White
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -117,12 +117,12 @@ fun ImageSection() {
 }
 
 @Composable
-fun FeatureCard(navController: NavHostController, bottomNavbarViewModel: BottomNavbarViewModel) {
+fun FeatureCard(navController: NavController, bottomNavbarViewModel: BottomNavbarViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(cornerRadius))
-            .background(White)
+            .background(MaterialTheme.colorScheme.surface)
             .height(250.dp)
             .padding(paddings)
     ) {
@@ -149,8 +149,8 @@ fun FeatureCard(navController: NavHostController, bottomNavbarViewModel: BottomN
 
             Button(
                 onClick = {
-                    bottomNavbarViewModel.onNavigationItemSelected(NavigationRoutes.Main.route)
-                    navController.navigate(NavigationRoutes.Main.AutismDetection.route)
+                    bottomNavbarViewModel.onNavigationItemSelected("detection_screen")
+                    navController.navigate("detection_screen")
                 },
                 shape = RoundedCornerShape(buttonCornerRadius),
                 colors = ButtonDefaults.buttonColors(containerColor = MediumBlue),
@@ -163,7 +163,7 @@ fun FeatureCard(navController: NavHostController, bottomNavbarViewModel: BottomN
                 Text(
                     text = "Check Now",
                     style = buttonTextStyle,
-                    color = White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

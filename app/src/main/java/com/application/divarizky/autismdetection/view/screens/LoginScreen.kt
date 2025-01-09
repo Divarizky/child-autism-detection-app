@@ -1,12 +1,23 @@
 package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,18 +33,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
-import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
-import com.application.divarizky.autismdetection.utils.Validator
 import com.application.divarizky.autismdetection.view.components.AppLogo
 import com.application.divarizky.autismdetection.view.components.CustomButton
 import com.application.divarizky.autismdetection.view.components.CustomTextField
-import com.application.divarizky.autismdetection.view.theme.*
+import com.application.divarizky.autismdetection.view.theme.Black
 import com.application.divarizky.autismdetection.view.theme.Dimens.appNameTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
@@ -42,6 +48,9 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.largeTextStyl
 import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
 import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
+import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
+import com.application.divarizky.autismdetection.view.theme.MediumBlue
+import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
 import com.application.divarizky.autismdetection.viewmodel.LoginViewModel
 
 @Composable
@@ -54,10 +63,9 @@ fun LoginScreen(
 
     val isLoading by viewModel.isLoading.observeAsState(false)
 
-    // Check if the user is already logged in
-    if (viewModel.checkLoginState()) {
+    // Memeriksa apakah pengguna sudah login
+    if (viewModel.checkLoginStatus()) {
         if (isLoading) {
-            // Display loading indicator while navigating to home screen
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -66,24 +74,26 @@ fun LoginScreen(
             }
         }
 
-        // Start navigation after a slight delay to ensure the UI can show the loading indicator
+        // Mengarahkan pengguna ke halaman utama jika sudah login sebelumnya
         LaunchedEffect(Unit) {
             viewModel.setLoading(true)
-            navController.navigate("home_screen") {
-                popUpTo("login_screen") { inclusive = true }
+            navController.navigate("main") {
+                popUpTo(0) // Menghapus seluruh stack hingga root
+                launchSingleTop = true
             }
             viewModel.setLoading(false)
         }
+
     } else {
         val email by viewModel.email.observeAsState("")
         val password by viewModel.password.observeAsState("")
         val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
         val loginSuccess by viewModel.loginSuccess.observeAsState(false)
 
-        // Navigate to home screen if login is successful
-        if (loginSuccess!!) {
+        // Mengarahkan pengguna ke halaman utama jika login sudah berhasil
+        if (loginSuccess) {
             if (isLoading) {
-                // Display loading indicator while navigating to home screen
+                // Menampilkan indikator loading jika pengguna sedang login
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -94,10 +104,8 @@ fun LoginScreen(
 
             LaunchedEffect(Unit) {
                 viewModel.setLoading(true)
-                navController.navigate("home_screen") {
-                    popUpTo("login_screen") { inclusive = true }
-                }
-                viewModel.setLoading(false) // Hide loading indicator
+                navController.navigate("main")
+                viewModel.setLoading(false)
             }
         } else {
             // Login screen content
@@ -114,7 +122,7 @@ fun LoginScreen(
                 scrollState = viewModel.scrollState,
                 onScrollStateChange = { viewModel.updateScrollState(it) },
                 onSignUpClick = {
-                    navController.navigate("signup_screen")
+                    navController.navigate("sign_up_screen")
                 }
             )
         }
@@ -173,7 +181,7 @@ fun LoginScreenContent(
                     errorMessages = errorMessages,
                     onLoginClick = onLoginClick
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 SignUpSection(onSignUpClick = onSignUpClick)
             }
         }
@@ -194,10 +202,12 @@ fun LoginSection(
         // Sign in title text
         Text(
             text = stringResource(R.string.login_title),
-            style = largeTextStyle,
+            style = titleTextStyle,
             fontWeight = FontWeight.Bold,
-            color = Black
+            color = MaterialTheme.colorScheme.onBackground
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         // Sign in subtitle text
         Text(
@@ -214,7 +224,7 @@ fun LoginSection(
             value = email,
             onValueChange = onEmailChange,
             label = "Email",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email) // Set keyboard type for email
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         errorMessages[LoginViewModel.Field.EMAIL]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -222,13 +232,13 @@ fun LoginSection(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password TextField with PasswordVisualTransformation
+        // Password TextField dengan menerapkan PasswordVisualTransformation
         CustomTextField(
             value = password,
             onValueChange = onPasswordChange,
             label = "Password",
             isPassword = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password) // Set keyboard type for password
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         errorMessages[LoginViewModel.Field.PASSWORD]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -243,7 +253,12 @@ fun LoginSection(
             buttonCornerRadius = buttonCornerRadius,
             buttonHeight = buttonHeight,
             containerColor = MediumBlue,
-            textStyle = buttonTextStyle
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = NunitoSansFamily,
+                fontSize = buttonTextStyle.fontSize,
+                fontWeight = FontWeight.Bold
+            )
         )
     }
 }
@@ -257,34 +272,19 @@ fun SignUpSection(onSignUpClick: () -> Unit) {
         Text(
             text = stringResource(id = R.string.create_account),
             style = regularTextStyle,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
-        Spacer(modifier = Modifier.width(6.dp))
-        ClickableText(
-            text = AnnotatedString(stringResource(id = R.string.sign_up)),
-            onClick = { onSignUpClick() },
-            style = TextStyle.Default.copy(
-                fontWeight = FontWeight.Bold,
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            modifier = Modifier
+                .clickable { onSignUpClick() },
+            text = stringResource(id = R.string.sign_up),
+            style = TextStyle(
                 fontFamily = NunitoSansFamily,
-                color = MediumBlue
+                fontSize = regularTextStyle.fontSize,
+                color = MediumBlue,
+                fontWeight = FontWeight.Bold
             )
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreenContent(
-        email = "test@example.com",
-        onEmailChange = {},
-        password = "password",
-        onPasswordChange = {},
-        errorMessages = emptyMap(),
-        isLoading = false,
-        scrollState = rememberScrollState(0),
-        onScrollStateChange = {},
-        onLoginClick = {},
-        onSignUpClick = {}
-    )
 }

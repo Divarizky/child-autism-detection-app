@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +44,8 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextSt
 import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.utils.Validator
+import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
+import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
 import com.application.divarizky.autismdetection.viewmodel.SignUpViewModel
 
 @Composable
@@ -138,10 +142,12 @@ fun SignUpSection(
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.sign_up_title),
-            style = largeTextStyle,
+            style = titleTextStyle,
             fontWeight = FontWeight.Bold,
-            color = Black
+            color = MaterialTheme.colorScheme.onBackground
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         Text(
             text = stringResource(R.string.sign_up_subtitle),
@@ -198,7 +204,12 @@ fun SignUpSection(
             buttonCornerRadius = buttonCornerRadius,
             buttonHeight = buttonHeight,
             containerColor = MediumBlue,
-            textStyle = buttonTextStyle
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = NunitoSansFamily,
+                fontSize = buttonTextStyle.fontSize,
+                fontWeight = FontWeight.Bold
+            )
         )
     }
 }
