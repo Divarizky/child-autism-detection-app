@@ -20,6 +20,10 @@
     <string name="sign_up_subtitle">Sign Up to your Account</string>
     <string name="sign_up_button_text">Sign Up</string>
 
+    // Forgot Password Screen
+    <string name="forgot_password_heading">Reset Your Password.</string>
+    <string name="forgot_password_description">New password must be different from previous used passwords.</string>
+
     // Home Screen
     <string name="home_screen_tagline">Let\'s start early detection of autism easily</string>
 
