@@ -162,7 +162,7 @@ fun SignUpSection(
         CustomTextField(
             value = username,
             onValueChange = onUsernameChange, // Use the lambda function passed down
-            label = "Username",
+            label = stringResource(R.string.username_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text) // Set keyboard type for username
         )
         errorMessages[SignUpViewModel.Field.USERNAME]?.let { error ->
@@ -175,7 +175,7 @@ fun SignUpSection(
         CustomTextField(
             value = email,
             onValueChange = onEmailChange, // Use the lambda function passed down
-            label = "Email",
+            label = stringResource(R.string.email_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email) // Set keyboard type for email
         )
         errorMessages[SignUpViewModel.Field.EMAIL]?.let { error ->
@@ -188,7 +188,7 @@ fun SignUpSection(
         CustomTextField(
             value = password,
             onValueChange = onPasswordChange, // Use the lambda function passed down
-            label = "Password",
+            label = stringResource(R.string.password_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // Set keyboard type for email
             isPassword = true
         )
@@ -199,7 +199,7 @@ fun SignUpSection(
         Spacer(modifier = Modifier.height(40.dp))
 
         CustomButton(
-            text = stringResource(R.string.sign_up_button_text),
+            text = stringResource(R.string.button_text),
             onClick = onSignUpSuccess,
             buttonCornerRadius = buttonCornerRadius,
             buttonHeight = buttonHeight,

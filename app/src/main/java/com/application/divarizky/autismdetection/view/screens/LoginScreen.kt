@@ -3,7 +3,6 @@ package com.application.divarizky.autismdetection.view.screens
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -84,7 +82,7 @@ fun LoginScreen(
         }
 
     } else {
-        val email by viewModel.email.observeAsState("")
+        val emailOrUsername by viewModel.emailOrUsername.observeAsState("")
         val password by viewModel.password.observeAsState("")
         val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
         val loginSuccess by viewModel.loginSuccess.observeAsState(false)
@@ -109,8 +107,8 @@ fun LoginScreen(
         } else {
             // Login screen content
             LoginScreenContent(
-                email = email,
-                onEmailChange = { viewModel.onEmailChange(it) },
+                emailOrUsername = emailOrUsername,
+                onEmailOrUsernameChange = { viewModel.onEmailOrUsernameChange(it) },
                 password = password,
                 onPasswordChange = { viewModel.onPasswordChange(it) },
                 errorMessages = errorMessages,
@@ -133,8 +131,8 @@ fun LoginScreen(
 
 @Composable
 fun LoginSection(
-    email: String,
-    onEmailChange: (String) -> Unit,
+    emailOrUsername: String,
+    onEmailOrUsernameChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
     errorMessages: Map<LoginViewModel.Field, String?>,
@@ -162,14 +160,14 @@ fun LoginSection(
 
         Spacer(modifier = Modifier.height(paddings))
 
-        // Email TextField
+        // Email or Username TextField
         CustomTextField(
-            value = email,
-            onValueChange = onEmailChange,
-            label = "Email",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            value = emailOrUsername,
+            onValueChange = onEmailOrUsernameChange,
+            label = stringResource(R.string.email_and_username_hint),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
-        errorMessages[LoginViewModel.Field.EMAIL]?.let { error ->
+        errorMessages[LoginViewModel.Field.EMAIL_OR_USERNAME]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
         }
 
@@ -179,7 +177,7 @@ fun LoginSection(
         CustomTextField(
             value = password,
             onValueChange = onPasswordChange,
-            label = "Password",
+            label = stringResource(R.string.password_hint),
             isPassword = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
@@ -208,8 +206,8 @@ fun LoginSection(
 
 @Composable
 fun LoginScreenContent(
-    email: String,
-    onEmailChange: (String) -> Unit,
+    emailOrUsername: String,
+    onEmailOrUsernameChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
     errorMessages: Map<LoginViewModel.Field, String?>,
@@ -244,7 +242,7 @@ fun LoginScreenContent(
                 AppLogo(
                     logoResourceId = R.drawable.ic_logo,
                     logoSize = 45.dp,
-                    text = "CARE",
+                    text = stringResource(R.string.app),
                     textStyle = appNameTextStyle,
                     textColor = MediumBlue,
                     spacing = 8.dp
@@ -254,8 +252,8 @@ fun LoginScreenContent(
 
                 // Bagian Login
                 LoginSection(
-                    email = email,
-                    onEmailChange = onEmailChange,
+                    emailOrUsername = emailOrUsername,
+                    onEmailOrUsernameChange = onEmailOrUsernameChange,
                     password = password,
                     onPasswordChange = onPasswordChange,
                     errorMessages = errorMessages,
@@ -265,7 +263,7 @@ fun LoginScreenContent(
                 // "Forgot Password?" link
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Forgot password?",
+                    text = stringResource(R.string.forgot_password),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = NunitoSansFamily,
@@ -314,7 +312,7 @@ fun LoginScreenContent(
 
                 // "Create an Account" button
                 CustomButton(
-                    text = "Create an Account",
+                    text = stringResource(R.string.sign_up_button_text),
                     onClick = onSignUpClick,
                     buttonCornerRadius = buttonCornerRadius,
                     buttonHeight = buttonHeight,

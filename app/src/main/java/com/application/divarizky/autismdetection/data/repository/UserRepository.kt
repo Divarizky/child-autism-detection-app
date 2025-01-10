@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.application.divarizky.autismdetection.data.local.AppDatabase
 import com.application.divarizky.autismdetection.data.model.User
+import com.application.divarizky.autismdetection.utils.Validator
 
 interface UserRepository {
     suspend fun insertUser(user: User)
-    suspend fun login(email: String, password: String): Boolean?
+    suspend fun login(emailOrUsername: String, password: String): Boolean
     suspend fun getUserById(userId: Int): User?
     fun saveLoginState(isLoggedIn: Boolean)
     fun isLoggedIn(): Boolean
@@ -26,15 +27,20 @@ class UserRepositoryImpl(context: Context) : UserRepository {
         userDao.insertUser(user)
     }
 
-    override suspend fun login(email: String, password: String): Boolean {
-        val user = userDao.login(email, password)
+    // Login menggunakan email atau username
+    override suspend fun login(emailOrUsername: String, password: String): Boolean {
+        val user = if (Validator.isValidEmail(emailOrUsername)) {
+            userDao.loginByEmail(emailOrUsername, password)
+        } else {
+            userDao.loginByUsername(emailOrUsername, password)
+        }
         return if (user != null) {
             userDao.logoutAllUsers()
-            userDao.updateUser(user.copy(isLoggedIn = true))
-            saveLoginState(true)  // Save login state after successful login
+            userDao.updateUser(user.copy(isLoggedIn = true)) // Menandai status pengguna menjadi login
+            saveLoginState(true) // Menyimpan status login
             true
         } else {
-            saveLoginState(false)  // If login fails, save login state as false
+            saveLoginState(false) // Gagal login
             false
         }
     }
@@ -76,4 +82,3 @@ class UserRepositoryImpl(context: Context) : UserRepository {
         return userDao.getLoggedInUser()
     }
 }
-
