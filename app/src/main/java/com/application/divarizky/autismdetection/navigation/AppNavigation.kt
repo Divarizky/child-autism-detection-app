@@ -1,14 +1,8 @@
 package com.application.divarizky.autismdetection.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -17,6 +11,7 @@ import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.utils.Validator
 import com.application.divarizky.autismdetection.view.screens.AboutScreen
 import com.application.divarizky.autismdetection.view.screens.AutismDetectionScreen
+import com.application.divarizky.autismdetection.view.screens.ForgotPasswordScreen
 import com.application.divarizky.autismdetection.view.screens.HomeScreen
 import com.application.divarizky.autismdetection.view.screens.LoginScreen
 import com.application.divarizky.autismdetection.view.screens.SettingScreen
@@ -26,28 +21,10 @@ import com.application.divarizky.autismdetection.view.screens.WelcomeScreen
 import com.application.divarizky.autismdetection.view.screens.viewModelFactory
 import com.application.divarizky.autismdetection.viewmodel.AutismViewModel
 import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
+import com.application.divarizky.autismdetection.viewmodel.ForgotPasswordViewModel
 import com.application.divarizky.autismdetection.viewmodel.LoginViewModel
 import com.application.divarizky.autismdetection.viewmodel.SettingViewModel
 import com.application.divarizky.autismdetection.viewmodel.SignUpViewModel
-
-//sealed class NavigationRoutes(val route: String) {
-//    data object SplashScreen : NavigationRoutes("splashscreen")
-//    data object Welcome : NavigationRoutes("welcome_screen")
-//
-//    // Pengelompokkan navigasi pada Halaman Autentikasi
-//    data object Auth : NavigationRoutes("auth") {
-//        data object Login : NavigationRoutes("login_screen")
-//        data object SignUp : NavigationRoutes("signup_screen")
-//    }
-//
-//    // Pengelompokkan navigasi pada Halaman Utama setelah berhasil Login
-//    data object Main : NavigationRoutes("main") {
-//        data object Home : NavigationRoutes("home_screen")
-//        data object AutismDetection : NavigationRoutes("autism_detection_screen")
-//        data object Settings : NavigationRoutes("settings_screen")
-//        data object About : NavigationRoutes("about_screen")
-//    }
-//}
 
 @Composable
 fun AppNavigation(
@@ -97,6 +74,14 @@ fun AppNavigation(
                 )
                 LoginScreen(loginViewModel, navController)
             }
+            composable("forgot_password_screen") {
+                val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel(
+                    factory = viewModelFactory {
+                        ForgotPasswordViewModel(MyApp.appModule.userRepository, Validator)
+                    }
+                )
+                ForgotPasswordScreen(forgotPasswordViewModel, navController)
+            }
             composable("sign_up_screen") {
                 val signUpViewModel: SignUpViewModel = viewModel(
                     factory = viewModelFactory {
@@ -144,15 +129,3 @@ fun AppNavigation(
         }
     }
 }
-
-//@Composable
-//inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
-//    navController: NavController,
-//    noinline factory: () -> T
-//): T {
-//    val navGraphRoute = destination.parent?.route ?: return viewModel(factory = viewModelFactory(factory))
-//    val parentEntry = remember(this) {
-//        navController.getBackStackEntry(navGraphRoute)
-//    }
-//    return ViewModelProvider(parentEntry, viewModelFactory(factory))[T::class.java]
-//}

@@ -1,5 +1,6 @@
 package com.application.divarizky.autismdetection.view.theme
 
+import android.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -14,14 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Define dimensions default configuration for components
+// Mendefinisikan konfigurasi dimensi default untuk komponen
 object Dimens {
 
-    // Padding configuration
+    // Konfigurasi padding
     val paddings = 16.dp
     val height = 20.dp
 
-    // Text configuration
+    // Konfigurasi text
     val appNameTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
     val titleTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 24.sp, fontWeight = FontWeight.Bold)
     val largeTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 20.sp)
@@ -30,12 +31,12 @@ object Dimens {
     val smallTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 12.sp)
     val buttonTextStyle = TextStyle(fontFamily = NunitoSansFamily, fontSize = 14.sp, fontWeight = FontWeight.Bold)
 
-    // Button configuration
+    // Konfigurasi button
     val buttonCornerRadius = 8.dp
     val buttonSize = 52.dp
     val buttonHeight = 50.dp
 
-    // Images configuration
+    // Konfigurasi gambar
     val imageSize = 50.dp
     val imageWidth = 270.dp
     val imageHeight = 180.dp

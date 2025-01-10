@@ -12,6 +12,7 @@ interface UserRepository {
     fun saveLoginState(isLoggedIn: Boolean)
     fun isLoggedIn(): Boolean
     suspend fun logout()
+    suspend fun resetPassword(email: String, newPassword: String): Boolean // Tambahkan fungsi resetPassword
 }
 
 // UserRepository implementation
@@ -50,10 +51,21 @@ class UserRepositoryImpl(context: Context) : UserRepository {
         return sharedPreferences.getBoolean("isLoggedIn", false)
     }
 
-    // Function to handle on logout, save login state as false
     override suspend fun logout() {
         userDao.logoutAllUsers()
         saveLoginState(false)
+    }
+
+    // Function to reset user password
+    override suspend fun resetPassword(email: String, newPassword: String): Boolean {
+        val user = userDao.getUserByEmail(email) // Cari user berdasarkan email
+        return if (user != null) {
+            val updatedUser = user.copy(password = newPassword) // Update password user
+            userDao.updateUser(updatedUser) // Simpan perubahan di database
+            true // Berhasil mengubah password
+        } else {
+            false // Gagal jika email tidak ditemukan
+        }
     }
 
     suspend fun getUserByEmail(email: String): User? {
@@ -64,3 +76,4 @@ class UserRepositoryImpl(context: Context) : UserRepository {
         return userDao.getLoggedInUser()
     }
 }
+

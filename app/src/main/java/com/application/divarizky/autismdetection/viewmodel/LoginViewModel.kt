@@ -19,17 +19,16 @@ class LoginViewModel(
     private val validator: Validator
 ) : ViewModel() {
 
-    // Inisialisasi dengan nilai default kosong
-    private val _email = MutableLiveData<String>("")
+    private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
 
-    private val _password = MutableLiveData<String>("")
+    private val _password = MutableLiveData("")
     val password: LiveData<String> = _password
 
     private val _errorMessages = MutableLiveData<Map<Field, String?>>(emptyMap())
     val errorMessages: LiveData<Map<Field, String?>> = _errorMessages
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _loginSuccess = MutableLiveData<Boolean>()
@@ -63,7 +62,7 @@ class LoginViewModel(
         val errors = mutableMapOf<Field, String?>()
 
         if (!validator.isValidEmail(_email.value.orEmpty())) {
-            errors[Field.EMAIL] = "Invalid email. Please enter a valid email address."
+            errors[Field.EMAIL] = "Invalid email or username. Please enter a valid email address or username."
         }
 
         if (!validator.isValidPassword(_password.value.orEmpty())) {
@@ -100,6 +99,7 @@ class LoginViewModel(
         }
     }
 
+    // Fungsi untuk memeriksa status Login pengguna
     fun checkLoginStatus(): Boolean {
         setLoading(true)
         val isLoggedIn = userRepository.isLoggedIn()
