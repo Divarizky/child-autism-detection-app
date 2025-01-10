@@ -14,8 +14,13 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: User)
 
+    // Login menggunakan email dan password
     @Query("SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1")
-    suspend fun login(email: String, password: String): User?
+    suspend fun loginByEmail(email: String, password: String): User?
+
+    // Login menggunakan username dan password
+    @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
+    suspend fun loginByUsername(username: String, password: String): User?
 
     @Query("SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1")
     suspend fun getLoggedInUser(): User?

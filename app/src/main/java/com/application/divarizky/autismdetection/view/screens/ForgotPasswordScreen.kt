@@ -93,7 +93,7 @@ fun ForgotPasswordScreenContent(
         AppLogo(
             logoResourceId = R.drawable.ic_logo,
             logoSize = 45.dp,
-            text = "CARE",
+            text = stringResource(R.string.app),
             textStyle = appNameTextStyle,
             textColor = MediumBlue,
             spacing = 8.dp
@@ -149,7 +149,7 @@ fun ForgotPasswordSection(
         CustomTextField(
             value = email,
             onValueChange = onEmailChange,
-            label = "Email",
+            label = stringResource(R.string.email_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         errorMessages[ForgotPasswordViewModel.Field.EMAIL]?.let { error ->
@@ -162,7 +162,7 @@ fun ForgotPasswordSection(
         CustomTextField(
             value = newPassword,
             onValueChange = onNewPasswordChange,
-            label = "New Password",
+            label = stringResource(R.string.new_password_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             isPassword = true
         )
@@ -176,7 +176,7 @@ fun ForgotPasswordSection(
         CustomTextField(
             value = confirmPassword,
             onValueChange = onConfirmPasswordChange,
-            label = "Confirm Password",
+            label = stringResource(R.string.confirm_password_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             isPassword = true
         )
@@ -188,7 +188,7 @@ fun ForgotPasswordSection(
 
         // Reset Password Button
         CustomButton(
-            text = "Reset Password",
+            text = stringResource(R.string.reset_password_button_text),
             onClick = onResetSuccess,
             buttonCornerRadius = buttonCornerRadius,
             buttonHeight = buttonHeight,
