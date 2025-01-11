@@ -10,6 +10,7 @@ interface UserRepository {
     suspend fun insertUser(user: User)
     suspend fun login(emailOrUsername: String, password: String): Boolean
     suspend fun getUserById(userId: Int): User?
+    suspend fun getLoggedInUser(): User?
     fun saveLoginState(isLoggedIn: Boolean)
     fun isLoggedIn(): Boolean
     suspend fun logout()
@@ -74,11 +75,11 @@ class UserRepositoryImpl(context: Context) : UserRepository {
         }
     }
 
-    suspend fun getUserByEmail(email: String): User? {
-        return userDao.getUserByEmail(email)
+    override suspend fun getLoggedInUser(): User? {
+        return userDao.getLoggedInUser()
     }
 
-    suspend fun getLoggedInUser(): User? {
-        return userDao.getLoggedInUser()
+    suspend fun getUserByEmail(email: String): User? {
+        return userDao.getUserByEmail(email)
     }
 }

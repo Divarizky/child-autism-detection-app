@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,21 +25,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.data.model.User
 import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
-import com.application.divarizky.autismdetection.view.components.BottomNavbar
 import com.application.divarizky.autismdetection.view.theme.Dimens
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
@@ -240,7 +235,7 @@ fun SettingsContent(
                 .padding(horizontal = paddings)
         ) {
             Text(
-                text = stringResource(R.string.logout),
+                text = stringResource(R.string.log_out),
                 style = buttonTextStyle,
                 color = MaterialTheme.colorScheme.onBackground
             )

@@ -22,6 +22,7 @@ import com.application.divarizky.autismdetection.view.screens.viewModelFactory
 import com.application.divarizky.autismdetection.viewmodel.AutismViewModel
 import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 import com.application.divarizky.autismdetection.viewmodel.ForgotPasswordViewModel
+import com.application.divarizky.autismdetection.viewmodel.HomeViewModel
 import com.application.divarizky.autismdetection.viewmodel.LoginViewModel
 import com.application.divarizky.autismdetection.viewmodel.SettingViewModel
 import com.application.divarizky.autismdetection.viewmodel.SignUpViewModel
@@ -98,7 +99,12 @@ fun AppNavigation(
             route = "main"
         ) {
             composable("home_screen") {
-                HomeScreen(navController)
+                val homeViewModel: HomeViewModel = viewModel(
+                    factory = viewModelFactory {
+                        HomeViewModel(MyApp.appModule.userRepository)
+                    }
+                )
+                HomeScreen(navController, bottomNavbarViewModel, homeViewModel)
             }
             composable("detection_screen") {
                 val autismViewModel: AutismViewModel = viewModel(
