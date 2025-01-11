@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +34,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
+import com.application.divarizky.autismdetection.view.theme.Dimens
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerRadius
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.cornerRadius
@@ -46,11 +49,13 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyl
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.view.theme.White
 import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
+import com.application.divarizky.autismdetection.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    bottomNavbarViewModel: BottomNavbarViewModel = viewModel()
+    bottomNavbarViewModel: BottomNavbarViewModel = viewModel(),
+    homeViewModel: HomeViewModel = viewModel()
 ) {
     Scaffold(
         bottomBar = {
@@ -64,16 +69,20 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .padding(paddings)
         ) {
-            HomeContent(navController, bottomNavbarViewModel)
+            HomeContent(navController, bottomNavbarViewModel, homeViewModel)
         }
     }
 }
 
 @Composable
-fun HomeContent(navController: NavController, bottomNavbarViewModel: BottomNavbarViewModel) {
+fun HomeContent(
+    navController: NavController,
+    bottomNavbarViewModel: BottomNavbarViewModel,
+    homeViewModel: HomeViewModel
+) {
     Column {
         Spacer(modifier = Modifier.height(height))
-        GreetingSection()
+        GreetingSection(homeViewModel)
         ImageSection()
         Spacer(modifier = Modifier.height(height))
         FeatureCard(navController, bottomNavbarViewModel)
@@ -81,13 +90,16 @@ fun HomeContent(navController: NavController, bottomNavbarViewModel: BottomNavba
 }
 
 @Composable
-fun GreetingSection() {
+fun GreetingSection(homeViewModel: HomeViewModel) {
+    val username by homeViewModel.username.observeAsState("")
+
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier.fillMaxWidth()
     ) {
+        // Tampilkan nama pengguna sesuai yang sudah di daftarkan dan di ambil dari ViewModel
         Text(
-            text = "Hi, Divarizky",
+            text = "Hi, $username",
             style = titleTextStyle,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onPrimary

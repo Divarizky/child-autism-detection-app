@@ -12,14 +12,14 @@
     <string name="login_title">Let\'s Get Started.</string>
     <string name="login_subtitle">Login to your Account</string>
     <string name="create_account">Don\'t have any account?</string>
-    <string name="login_button_text">Login</string>
+    <string name="login_button_text">Log In</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_up_button_text">Create an Account</string>
 
     // Sign Up Screen
     <string name="sign_up_title">Let\'s Get Started.</string>
     <string name="sign_up_subtitle">Sign Up to your Account</string>
-    <string name="button_text">Sign Up</string>
+    <string name="button_text">Create an Account</string>
 
     // Forgot Password Screen
     <string name="forgot_password_heading">Reset Your Password.</string>
@@ -46,7 +46,7 @@
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
     <string name="about_us">About us</string>
-    <string name="logout">Logout</string>
+    <string name="log_out">Log out</string>
 
     /* ===== CUSTOM DIALOG ===== */
     // Option Dialog
@@ -70,7 +70,7 @@
     <string name="continue_button_text">Continue</string>
     <string name="try_again_button_text">Try Again</string>
 
-    /* ===== CUSTOM TEXTFIELD ===== */
+    /* ===== CUSTOM TEXT FIELD ===== */
     // Default
     <string name="email_hint">Email</string>
     <string name="username_hint">Username</string>
