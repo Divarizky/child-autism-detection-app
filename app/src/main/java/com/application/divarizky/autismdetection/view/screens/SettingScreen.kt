@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -58,7 +60,6 @@ fun SettingScreen(
 ) {
     val user by viewModel.user.observeAsState()
 
-    // Mengambil data ID pengguna yang saat ini Login
     LaunchedEffect(Unit) {
         viewModel.loadUser(1)
     }
@@ -68,20 +69,32 @@ fun SettingScreen(
             BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        val scrollStateInternal = rememberScrollState(viewModel.scrollState.value)
+        viewModel.updateScrollState(scrollStateInternal)
+
+        Box(
             modifier = Modifier
+                .fillMaxSize() // Memastikan seluruh layar digunakan
                 .background(color = MediumBlue)
-                .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            SettingHeader()
-            Spacer(modifier = Modifier.height(paddings))
-            IllustrationImage()
-            Spacer(modifier = Modifier.height(paddings))
-            SettingsContent(user, viewModel, navController, onAboutClick = {
-                navController.navigate("about_screen")
-            })
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollStateInternal)
+            ) {
+                SettingHeader()
+                Spacer(modifier = Modifier.height(paddings))
+                IllustrationImage()
+                Spacer(modifier = Modifier.height(paddings))
+                SettingsContent(
+                    user = user,
+                    settingViewModel = viewModel,
+                    navController = navController,
+                    onAboutClick = { navController.navigate("about_screen") }
+                )
+            }
         }
     }
 }
@@ -130,12 +143,13 @@ fun SettingsContent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
             .background(
                 MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(topStart = paddings, topEnd = paddings)
             )
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(bottom = 100.dp)
     ) {
         Spacer(modifier = Modifier.height(36.dp))
 
@@ -223,7 +237,7 @@ fun SettingsContent(
             onClick = {
                 settingViewModel.logout {
                     navController.navigate("login_screen") {
-                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                        popUpTo(0) { inclusive = false }
                     }
                 }
             },
@@ -237,7 +251,7 @@ fun SettingsContent(
             Text(
                 text = stringResource(R.string.log_out),
                 style = buttonTextStyle,
-                color = MaterialTheme.colorScheme.onBackground
+                color = White
             )
         }
     }

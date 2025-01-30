@@ -27,6 +27,7 @@
 
     // Home Screen
     <string name="home_screen_tagline">Let\'s start early detection of autism easily</string>
+    <string name="feature_card_button_text">Check Now</string>
 
     // Home Screen Feature Cards
     <string name="check_child_for_autism">Check Your Child for Possible Autism!</string>
@@ -86,5 +87,9 @@
     <string name="new_password_hint">New Password</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="reset_password_button_text">Reset Password</string>
+
+    /* ===== OTHERS ===== */
+    <string name="hide_password">Hide</string>
+    <string name="show_password">Show</string>
 
 </resources>

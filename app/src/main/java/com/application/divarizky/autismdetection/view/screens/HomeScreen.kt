@@ -1,6 +1,7 @@
 package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +65,10 @@ fun HomeScreen(
             BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
+        // Fungsi yang digunakan agar aplikasi dapat menggulirkan layar ketika rotasi layar Landscape
+        val scrollStateInternal = rememberScrollState(homeViewModel.scrollState.value)
+        homeViewModel.updateScrollState(scrollStateInternal)
+
         Box(
             modifier = Modifier
                 .background(color = MediumBlue)
@@ -69,7 +76,12 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .padding(paddings)
         ) {
-            HomeContent(navController, bottomNavbarViewModel, homeViewModel)
+            HomeContent(
+                navController,
+                bottomNavbarViewModel,
+                homeViewModel,
+                scrollState = scrollStateInternal
+            )
         }
     }
 }
@@ -78,9 +90,12 @@ fun HomeScreen(
 fun HomeContent(
     navController: NavController,
     bottomNavbarViewModel: BottomNavbarViewModel,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    scrollState: ScrollState
 ) {
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(scrollState)
+    ) {
         Spacer(modifier = Modifier.height(height))
         GreetingSection(homeViewModel)
         ImageSection()
@@ -173,9 +188,9 @@ fun FeatureCard(navController: NavController, bottomNavbarViewModel: BottomNavba
                     .align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Check Now",
+                    text = stringResource(R.string.feature_card_button_text),
                     style = buttonTextStyle,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = White
                 )
             }
         }

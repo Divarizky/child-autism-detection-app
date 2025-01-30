@@ -2,7 +2,6 @@ package com.application.divarizky.autismdetection.view.screens
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,10 +24,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,11 +45,10 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.buttonCornerR
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.paddings
-import com.application.divarizky.autismdetection.view.theme.Dimens.regularTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
-import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
+import com.application.divarizky.autismdetection.view.theme.getDynamicColors
 import com.application.divarizky.autismdetection.viewmodel.LoginViewModel
 
 @Composable
@@ -86,6 +86,7 @@ fun LoginScreen(
         val password by viewModel.password.observeAsState("")
         val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
         val loginSuccess by viewModel.loginSuccess.observeAsState(false)
+        val isPasswordVisible by viewModel.isPasswordVisible.observeAsState(false)
 
         // Mengarahkan pengguna ke halaman utama jika login sudah berhasil
         if (loginSuccess) {
@@ -111,6 +112,8 @@ fun LoginScreen(
                 onEmailOrUsernameChange = { viewModel.onEmailOrUsernameChange(it) },
                 password = password,
                 onPasswordChange = { viewModel.onPasswordChange(it) },
+                isPasswordVisible = isPasswordVisible,
+                onTogglePasswordVisibility = { viewModel.togglePasswordVisibility() },
                 errorMessages = errorMessages,
                 onLoginClick = {
                     viewModel.login(context)
@@ -135,30 +138,12 @@ fun LoginSection(
     onEmailOrUsernameChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onTogglePasswordVisibility: () -> Unit,
     errorMessages: Map<LoginViewModel.Field, String?>,
     onLoginClick: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-
-        // Sign in title text
-        Text(
-            text = stringResource(R.string.login_title),
-            style = titleTextStyle,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Sign in subtitle text
-        Text(
-            text = stringResource(R.string.login_subtitle),
-            style = regularTextStyle,
-            fontWeight = FontWeight.Bold,
-            color = LightGray
-        )
-
-        Spacer(modifier = Modifier.height(paddings))
 
         // Email or Username TextField
         CustomTextField(
@@ -173,13 +158,25 @@ fun LoginSection(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Password TextField dengan menerapkan PasswordVisualTransformation
+        // Password TextField dengan ikon toggle
         CustomTextField(
             value = password,
             onValueChange = onPasswordChange,
             label = stringResource(R.string.password_hint),
-            isPassword = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            isPassword = !isPasswordVisible, // Toggle visibility
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                IconButton(onClick = onTogglePasswordVisibility) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (isPasswordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                        ),
+                        contentDescription = stringResource(
+                            id = if (isPasswordVisible) R.string.hide_password else R.string.show_password
+                        )
+                    )
+                }
+            }
         )
         errorMessages[LoginViewModel.Field.PASSWORD]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -195,7 +192,7 @@ fun LoginSection(
             buttonHeight = buttonHeight,
             containerColor = MediumBlue,
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = White,
                 fontFamily = NunitoSansFamily,
                 fontSize = buttonTextStyle.fontSize,
                 fontWeight = FontWeight.Bold
@@ -210,6 +207,8 @@ fun LoginScreenContent(
     onEmailOrUsernameChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onTogglePasswordVisibility: () -> Unit,
     errorMessages: Map<LoginViewModel.Field, String?>,
     isLoading: Boolean,
     scrollState: ScrollState,
@@ -218,8 +217,12 @@ fun LoginScreenContent(
     onForgotPasswordClick: () -> Unit,
     onSignUpClick: () -> Unit
 ) {
+    // Fungsi yang digunakan agar aplikasi dapat menggulirkan layar ketika rotasi layar Landscape
     val scrollStateInternal = rememberScrollState(scrollState.value)
     onScrollStateChange(scrollStateInternal)
+
+    // Mengambil warna dinamis sesuai dengan tema (OS 12+)
+    val dynamicColors = getDynamicColors()
 
     Box(
         contentAlignment = Alignment.Center,
@@ -256,19 +259,22 @@ fun LoginScreenContent(
                     onEmailOrUsernameChange = onEmailOrUsernameChange,
                     password = password,
                     onPasswordChange = onPasswordChange,
+                    isPasswordVisible = isPasswordVisible,
+                    onTogglePasswordVisibility = onTogglePasswordVisibility,
                     errorMessages = errorMessages,
                     onLoginClick = onLoginClick
                 )
 
                 // "Forgot Password?" link
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = stringResource(R.string.forgot_password),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = NunitoSansFamily,
                         fontWeight = FontWeight.Bold,
-                        color = MediumBlue
+                        color = dynamicColors.forgotPasswordTextColor
                     ),
                     modifier = Modifier.clickable { onForgotPasswordClick() }
                 )
@@ -305,20 +311,15 @@ fun LoginScreenContent(
                 // "Create an Account" button
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Warna tombol dan teks berdasarkan mode terang/gelap
-                val isDarkTheme = isSystemInDarkTheme()
-                val buttonColor = if (isDarkTheme) Color.White else Color.Black
-                val textColor = if (isDarkTheme) Color.Black else Color.White
-
                 // "Create an Account" button
                 CustomButton(
                     text = stringResource(R.string.sign_up_button_text),
                     onClick = onSignUpClick,
                     buttonCornerRadius = buttonCornerRadius,
                     buttonHeight = buttonHeight,
-                    containerColor = buttonColor,
+                    containerColor = dynamicColors.buttonColor,
                     textStyle = TextStyle(
-                        color = textColor,
+                        color = dynamicColors.textColor,
                         fontFamily = NunitoSansFamily,
                         fontSize = buttonTextStyle.fontSize,
                         fontWeight = FontWeight.Bold

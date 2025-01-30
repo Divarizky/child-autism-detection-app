@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +41,7 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyl
 import com.application.divarizky.autismdetection.view.theme.Dimens.titleTextStyle
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
 import com.application.divarizky.autismdetection.view.theme.NunitoSansFamily
+import com.application.divarizky.autismdetection.view.theme.White
 import com.application.divarizky.autismdetection.viewmodel.ForgotPasswordViewModel
 
 @Composable
@@ -48,6 +52,8 @@ fun ForgotPasswordScreen(
     val email by viewModel.email.observeAsState("")
     val newPassword by viewModel.newPassword.observeAsState("")
     val confirmPassword by viewModel.confirmPassword.observeAsState("")
+    val isPasswordVisible by viewModel.isPasswordVisible.observeAsState(false)
+    val isConfirmPasswordVisible by viewModel.isConfirmPasswordVisible.observeAsState(false)
     val errorMessages by viewModel.errorMessages.observeAsState(emptyMap())
 
     val onResetSuccess: () -> Unit = {
@@ -64,6 +70,10 @@ fun ForgotPasswordScreen(
         onNewPasswordChange = { viewModel.updateNewPassword(it) },
         confirmPassword = confirmPassword,
         onConfirmPasswordChange = { viewModel.updateConfirmPassword(it) },
+        isPasswordVisible = isPasswordVisible,
+        onTogglePasswordVisibility = { viewModel.togglePasswordVisibility() },
+        isConfirmPasswordVisible = isConfirmPasswordVisible,
+        onToggleConfirmPasswordVisibility = { viewModel.toggleConfirmPasswordVisibility() },
         errorMessages = errorMessages,
         onResetSuccess = onResetSuccess
     )
@@ -77,6 +87,10 @@ fun ForgotPasswordScreenContent(
     onNewPasswordChange: (String) -> Unit,
     confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onTogglePasswordVisibility: () -> Unit,
+    isConfirmPasswordVisible: Boolean,
+    onToggleConfirmPasswordVisibility: () -> Unit,
     errorMessages: Map<ForgotPasswordViewModel.Field, String?>,
     onResetSuccess: () -> Unit
 ) {
@@ -89,7 +103,6 @@ fun ForgotPasswordScreenContent(
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
-        // Logo dan judul aplikasi
         AppLogo(
             logoResourceId = R.drawable.ic_logo,
             logoSize = 45.dp,
@@ -101,7 +114,6 @@ fun ForgotPasswordScreenContent(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Form reset password
         ForgotPasswordSection(
             email = email,
             onEmailChange = onEmailChange,
@@ -109,6 +121,10 @@ fun ForgotPasswordScreenContent(
             onNewPasswordChange = onNewPasswordChange,
             confirmPassword = confirmPassword,
             onConfirmPasswordChange = onConfirmPasswordChange,
+            isPasswordVisible = isPasswordVisible,
+            onTogglePasswordVisibility = onTogglePasswordVisibility,
+            isConfirmPasswordVisible = isConfirmPasswordVisible,
+            onToggleConfirmPasswordVisibility = onToggleConfirmPasswordVisibility,
             errorMessages = errorMessages,
             onResetSuccess = onResetSuccess
         )
@@ -123,6 +139,10 @@ fun ForgotPasswordSection(
     onNewPasswordChange: (String) -> Unit,
     confirmPassword: String,
     onConfirmPasswordChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onTogglePasswordVisibility: () -> Unit,
+    isConfirmPasswordVisible: Boolean,
+    onToggleConfirmPasswordVisibility: () -> Unit,
     errorMessages: Map<ForgotPasswordViewModel.Field, String?>,
     onResetSuccess: () -> Unit
 ) {
@@ -163,8 +183,20 @@ fun ForgotPasswordSection(
             value = newPassword,
             onValueChange = onNewPasswordChange,
             label = stringResource(R.string.new_password_hint),
+            isPassword = !isPasswordVisible,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            isPassword = true
+            trailingIcon = {
+                IconButton(onClick = onTogglePasswordVisibility) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (isPasswordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                        ),
+                        contentDescription = stringResource(
+                            id = if (isPasswordVisible) R.string.hide_password else R.string.show_password
+                        )
+                    )
+                }
+            }
         )
         errorMessages[ForgotPasswordViewModel.Field.NEW_PASSWORD]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -177,8 +209,20 @@ fun ForgotPasswordSection(
             value = confirmPassword,
             onValueChange = onConfirmPasswordChange,
             label = stringResource(R.string.confirm_password_hint),
+            isPassword = !isConfirmPasswordVisible,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            isPassword = true
+            trailingIcon = {
+                IconButton(onClick = onToggleConfirmPasswordVisibility) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (isConfirmPasswordVisible) R.drawable.ic_visibility_off else R.drawable.ic_visibility
+                        ),
+                        contentDescription = stringResource(
+                            id = if (isConfirmPasswordVisible) R.string.hide_password else R.string.show_password
+                        )
+                    )
+                }
+            }
         )
         errorMessages[ForgotPasswordViewModel.Field.CONFIRM_PASSWORD]?.let { error ->
             Text(text = error, color = Red, style = smallTextStyle)
@@ -194,7 +238,7 @@ fun ForgotPasswordSection(
             buttonHeight = buttonHeight,
             containerColor = MediumBlue,
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = White,
                 fontFamily = NunitoSansFamily,
                 fontSize = buttonTextStyle.fontSize,
                 fontWeight = FontWeight.Bold

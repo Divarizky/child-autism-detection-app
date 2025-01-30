@@ -24,6 +24,13 @@ class SignUpViewModel(private val userRepository: UserRepository, private val va
     private val _password = MutableLiveData("")
     val password: LiveData<String> = _password
 
+    private val _isPasswordVisible = MutableLiveData(false)
+    val isPasswordVisible: LiveData<Boolean> = _isPasswordVisible
+
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = !(_isPasswordVisible.value ?: false)
+    }
+
     fun updateUsername(newUsername: String) {
         _username.value = newUsername
     }
