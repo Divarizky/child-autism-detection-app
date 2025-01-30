@@ -1,6 +1,5 @@
 package com.application.divarizky.autismdetection.view.theme
 
-import android.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +7,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -56,6 +56,32 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = White,
     onSecondary = White
 )
+
+@Composable
+fun getDynamicColors(): DynamicColors {
+    val isDarkTheme = isSystemInDarkTheme()
+    return if (isDarkTheme) {
+        DynamicColors(
+            buttonColor = White,
+            textColor = Black,
+            forgotPasswordTextColor = White
+        )
+    } else {
+        DynamicColors(
+            buttonColor = Black,
+            textColor = White,
+            forgotPasswordTextColor = Black
+        )
+    }
+}
+
+// Data class untuk menyimpan warna dinamis
+data class DynamicColors(
+    val buttonColor: Color,
+    val textColor: Color,
+    val forgotPasswordTextColor: Color
+)
+
 
 @Composable
 fun AutismDetectionTheme(

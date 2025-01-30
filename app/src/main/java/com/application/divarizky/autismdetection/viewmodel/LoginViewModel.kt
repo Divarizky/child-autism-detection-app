@@ -34,6 +34,13 @@ class LoginViewModel(
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: MutableLiveData<Boolean> = _loginSuccess
 
+    private val _isPasswordVisible = MutableLiveData(false)
+    val isPasswordVisible: LiveData<Boolean> = _isPasswordVisible
+
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = !(_isPasswordVisible.value ?: false)
+    }
+
     private var isValidationAttempted = false
 
     var scrollState: ScrollState by mutableStateOf(ScrollState(0))

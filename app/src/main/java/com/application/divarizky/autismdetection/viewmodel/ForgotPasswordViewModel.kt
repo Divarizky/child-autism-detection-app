@@ -19,6 +19,20 @@ open class ForgotPasswordViewModel(private val userRepository: UserRepository, p
     private val _confirmPassword = MutableLiveData("")
     val confirmPassword: LiveData<String> = _confirmPassword
 
+    private val _isPasswordVisible = MutableLiveData(false)
+    val isPasswordVisible: LiveData<Boolean> = _isPasswordVisible
+
+    private val _isConfirmPasswordVisible = MutableLiveData(false)
+    val isConfirmPasswordVisible: LiveData<Boolean> = _isConfirmPasswordVisible
+
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = !(_isPasswordVisible.value ?: false)
+    }
+
+    fun toggleConfirmPasswordVisibility() {
+        _isConfirmPasswordVisible.value = !(_isConfirmPasswordVisible.value ?: false)
+    }
+
     fun updateEmail(newEmail: String) {
         _email.value = newEmail
     }

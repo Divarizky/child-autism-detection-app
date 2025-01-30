@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.metadata)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -80,6 +81,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.7.2")
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.2")
     implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Jetpack Compose Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")

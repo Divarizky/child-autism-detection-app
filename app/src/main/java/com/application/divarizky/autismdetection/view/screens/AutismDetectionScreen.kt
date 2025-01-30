@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,15 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.application.divarizky.autismdetection.MyApp
 import com.application.divarizky.autismdetection.R
 import com.application.divarizky.autismdetection.navigation.BottomNavigationBar
-import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
-import com.application.divarizky.autismdetection.view.components.BottomNavbar
+import com.application.divarizky.autismdetection.utils.ImageHandler
 import com.application.divarizky.autismdetection.view.components.OptionDialog
 import com.application.divarizky.autismdetection.view.components.ResultDialogFailed
 import com.application.divarizky.autismdetection.view.components.ResultDialogSuccess
@@ -50,8 +47,9 @@ import com.application.divarizky.autismdetection.view.theme.Dimens.buttonHeight
 import com.application.divarizky.autismdetection.view.theme.Dimens.buttonTextStyle
 import com.application.divarizky.autismdetection.view.theme.Dimens.smallTextStyle
 import com.application.divarizky.autismdetection.view.theme.MediumBlue
-import com.application.divarizky.autismdetection.utils.ImageHandler
+import com.application.divarizky.autismdetection.view.theme.White
 import com.application.divarizky.autismdetection.viewmodel.AutismViewModel
+import com.application.divarizky.autismdetection.viewmodel.BottomNavbarViewModel
 import com.application.divarizky.autismdetection.viewmodel.DetectionResult
 
 @Composable
@@ -93,6 +91,9 @@ fun AutismDetectionScreen(
             BottomNavigationBar(navController, bottomNavbarViewModel)
         }
     ) { innerPadding ->
+        val scrollStateInternal = rememberScrollState(viewModel.scrollState.value)
+        viewModel.updateScrollState(scrollStateInternal)
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -100,7 +101,9 @@ fun AutismDetectionScreen(
                 .padding(Dimens.paddings)
         ) {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollStateInternal)
             ) {
                 Header()
                 Spacer(modifier = Modifier.weight(1f))
@@ -236,7 +239,8 @@ fun ActionButtons(
         ) {
             Text(
                 text = stringResource(R.string.take_a_picture_button_text),
-                style = buttonTextStyle
+                style = buttonTextStyle,
+                color = White
             )
         }
 
@@ -253,7 +257,8 @@ fun ActionButtons(
         ) {
             Text(
                 text = stringResource(R.string.scan_button_text),
-                style = buttonTextStyle
+                style = buttonTextStyle,
+                color = White
             )
         }
     }

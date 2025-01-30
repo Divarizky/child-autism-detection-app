@@ -5,7 +5,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.foundation.ScrollState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.divarizky.autismdetection.R
@@ -33,6 +36,8 @@ class AutismViewModel(
     private var imageBitmap: Bitmap? = null
     private val permissionGranted = mutableStateOf(false)
 
+    var scrollState: ScrollState by mutableStateOf(ScrollState(0))
+
     private val tfliteModel: TFLiteModel? = try {
         TFLiteModel(context)
     } catch (e: Exception) {
@@ -54,6 +59,10 @@ class AutismViewModel(
 
     fun handlePermissionResult(granted: Boolean) {
         permissionGranted.value = granted
+    }
+
+    fun updateScrollState(newScrollState: ScrollState) {
+        scrollState = newScrollState
     }
 
     fun handleImageResult(data: Intent?) {
