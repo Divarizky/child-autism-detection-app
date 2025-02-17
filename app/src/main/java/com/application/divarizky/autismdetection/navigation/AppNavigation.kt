@@ -109,7 +109,7 @@ fun AppNavigation(
             composable("detection_screen") {
                 val autismViewModel: AutismViewModel = viewModel(
                     factory = viewModelFactory {
-                        AutismViewModel(MyApp.appModule.userRepository, MyApp.appModule.context)
+                        AutismViewModel(MyApp.appModule.context)
                     }
                 )
                 AutismDetectionScreen(autismViewModel, bottomNavbarViewModel, navController)
