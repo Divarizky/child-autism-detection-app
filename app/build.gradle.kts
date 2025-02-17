@@ -88,7 +88,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // TensorFlow
-    implementation("org.tensorflow:tensorflow-lite:2.9.0")
+    implementation("org.tensorflow:tensorflow-lite:2.10.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.4.4")
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")

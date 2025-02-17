@@ -82,7 +82,6 @@ data class DynamicColors(
     val forgotPasswordTextColor: Color
 )
 
-
 @Composable
 fun AutismDetectionTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
